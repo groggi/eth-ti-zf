@@ -1,0 +1,185 @@
+\chapter{Alphabete, Wörter, Sprachen}
+Zur Darstellung von Daten werden Symbole verwendet. Diese wiederum werden zur Bildung von Wörtern genutzt. Und aus Wörtern bildet sich eine Sprache.
+
+\section{Alphabet}
+\begin{definition}
+Eine endliche nichtleere Menge $\Sigma$ heisst \textbf{Alphabet}. Die Elemente von $\Sigma$ werden als \textbf{Buchstaben, Zeichen oder Symbole} bezeichnet.
+\end{definition}
+
+Häufig benötigte Alphabete:
+\begin{itemize}
+    \item $\Sigma_\text{bool} = \{0,1\}$
+    \item $\Sigma_\text{lat} = \{a, b, c, \ldots, z\}$
+    \item $\Sigma_\text{Tastatur} = \Sigma_\text{lat} \cup \{A, B, C, \ldots, \textvisiblespace, <, >, \ldots\}$ (Alphabet aller Zeichen auf einer Tastatur)
+    \item $\Sigma_m = \{0, 1, 2, \ldots, m - 1\}$ (Alphabet für die $m$-adische Darstellung von Zahlen, $m \geq 1$)
+    \item $\Sigma_\text{logic} = \{0, 1, x, (, ), \land, \lor, \lnot\}$ (Alphabet um Boole'sche Formeln darzustellen)
+\end{itemize}
+
+\section{Wort}
+\subsection{Grundlagen}
+Ein \textbf{Wort} wird aus Elementen eines zugrundeliegenden Alphabets gebildet.\\
+
+\begin{definition}
+Sei $\Sigma$ ein Alphabet. Ein \textbf{Wort} über $\Sigma$ ist eine endliche Folge von Buchstaben aus $\Sigma$.\\
+\end{definition}
+
+\begin{remark}
+$\Sigma^*$ ist die Menge aller Wörter über dem Alphabet $\Sigma$. $\Sigma^+ = \Sigma^* - \{\lambda\}$, also die Menge aller Wörter ohne das leere Wort.\\
+\end{remark}
+
+
+\begin{definition}
+Das \textbf{leere Wort} wird durch $\lambda$ (oft auch $\epsilon$) dargestellt und entspricht der leeren Folge.\\
+\end{definition}
+
+\begin{definition}
+Die \textbf{Länge} eines Wortes $w$, bezeichnet durch $|w|$, ist die Länge der Folge, d.h. die Anzahl vorkommender Buchstaben in $w$.\\
+\end{definition}
+
+\begin{remark}
+Das leere Wort $\lambda$ ist ein Wort über jedem Alphabet.\\
+\end{remark}
+
+\begin{definition}
+Sei $w \in \Sigma^*$ und $a \in \Sigma$. Dann ist $|w|_a$ definiert als die Anzahl der Vorkommen von $a$ in $w$.
+\end{definition}
+
+
+\subsection{Beispiele für Kodierungen}
+\subsubsection{Natürliche Zahlen}
+Sei $m$ eine natürliche Zahl. Dann erzeugt die Funktion $\operatorname{Bin}(m) \in \Sigma_\text{bool}^*$ die binäre Darstellung der natürlichen Zahl $m$. Damit $\operatorname{Bin}(m)$ eindeutig ist, soll die Funktion die kürzeste binäre Darstellung liefern (das erste Zeichen ist eine 1).
+
+Die Umkehrfunktion ist $\text{Nummer}(x) = \sum_{i = 1}^n x_i \cdot 2^{n-i}$ und erzeugt für eine binäre Darstellung $x$ die natürliche Zahl.
+
+\ subsubsection{Graphen}
+Gerichtete Graphen $G = (V, E)$ ($V$ ist die Knotenmenge, $E$ die Kantenmenge) können durch eine Adjazenzmatrix $M_G$ beschrieben werden: $M_G = [a_{ij}]$. Falls der Knoten $v_i \in V$ mit dem Knoten $v_j \in V$ verbunden ist, so gilt für $M_G$: $a_{ij} = 1$, sonst $a_{ij} = 0$. Die Adjazenzmatrix kann nun durch ein Wort über dem Alphabet $\Sigma = \{0, 1, \#\}$ beschrieben werden. Dazu schreibt man den Inhalt jeder Zeile nacheinander und trennt die Zeilen im entstehenden Wort durch $\#$.
+
+Möchte man einen gewichteten Graphen $G = (V, E, h)$ mit einer Funktion $h(e) \in \N - \{0\}$ für eine Kante $e \in E$, so kann dies ebenfalls über dem Alphabet $\Sigma = \{0, 1, \#\}$ gemacht werden. Wieder schreibt man den Inhalt jeder Zeile der Adjazenzmatrix nacheinander. Dabei kodiert man die Gewichtung mittels $\operatorname{Bin}(h(e))$, trennt die einzelnen Matrixeinträge durch $\#$ ab und Zeilen durch $\#\#$.
+
+\subsubsection{Bool'sche Formeln}
+Für Bool'sche Formeln verwenden wir das Alphabet $\Sigma_\text{logic} = \{0, 1, x, (, ), \land, \lor, \lnot\}$. In Bool'schen Formeln kommen, im Gegensatz zu unserem Alphabet, beliebig viele Variabeln $x_i$ vor. Unser Alphabet muss aber gleichzeitig endlich sein. Deshalb werden die Variabeln $x_i$ durch das Wort $x\operatorname{Bin}(i)$ kodiert. Die restlichen Symbole können direkt übernommen werden.
+
+\subsection{Konkatenation}
+\begin{definition}
+Die \textbf{Verkettung (Konkatenation)} für ein Alphabet $\Sigma$ ist eine Abbildung $K: \Sigma^* \times \Sigma^* \to \Sigma^*$, so dass für alle $x, y \in \Sigma^*$
+\[
+K(x, z) = x \cdot y = xy
+\]
+gilt.\\
+\end{definition}
+
+\begin{remark}
+Die Verkettung $K$ über $\Sigma$ ist eine assoziative Operation:
+\[
+K(u, K(v, w)) = u \cdot (v \cdot w) = u \cdot (vw) = uvw = (u \cdot v) \cdot w = K(K(u, v), w)
+\]\\
+\end{remark}
+
+\begin{remark}
+Für jedes $w \in \Sigma^*$ gilt
+\[
+w \cdot \lambda = \lambda \cdot w = x
+\]\\
+\end{remark}
+
+\begin{remark}
+Die Konkatenation ist nur für einelementige Alphabete kommutativ.\\
+\end{remark}
+
+\begin{remark}
+Für alle $x, y \in \Sigma^*$ gilt:
+\[
+|xy| = |x \cdot y| = |x| + |y|
+\]
+\end{remark}
+
+\begin{definition}
+Sei $\Sigma$ ein Alphabet. Für alle $x \in \Sigma^*$ und alle $i \in \N$ wird die $i$-te Iteration $x^i$ von $x$ definiert als:
+\[
+x^0 = \lambda,\quad x^1 = x,\quad x^i = x \cdot x^{i-1}
+\]
+\end{definition}
+
+\subsection{Teilworte}
+\begin{definition}
+Seien $u, w \in \Sigma^*$ für ein Alphabet $\Sigma$.
+\begin{itemize}
+  \item $v$ ist ein \textbf{Teilwort} von $w$ $\Leftrightarrow \exists x, y \in \Sigma^*: w = xvy$
+  \item $v$ ist ein \textbf{Suffix} von $w$ $\Leftrightarrow \exists x \in \Sigma^*: w = xv$
+  \item $v$ ist ein \textbf{Präfix} von $w$ $\Leftrightarrow \exists x \in \Sigma^*: w = vx$
+  \item $v$ ist ein \textbf{echtes} Teilwort/Suffix/Präfix von $w$ genau dann, wenn $v \not= w$, $v \not= \lambda$ und $v$ ist ein Teilwort/Suffix/Präfix von $w$
+\end{itemize}
+
+\end{definition}
+
+\subsection{Ordnung}
+\begin{definition}
+Sei $\Sigma = \{s_1, s_2, \ldots, s_m\}$ ein Alphabet für ein beliebiges $m \geq 1$. Weiter sei $s_1 < s_2 < s_3 < \ldots < s_m$ eine Ordnung auf $\Sigma$. Darauf basierend wir die \textbf{kanonische Ordnung} auf $\Sigma^*$ für $u, v \in \Sigma^*$ wie folgt definiert:
+\begin{align*}
+u < v \Leftrightarrow \quad & |u| < |v|\\
+&\lor (|u| = |v| \land u = x \cdot s_i \cdot u' \land v = x \cdot s_j \cdot v'\\
+&\text{für beliebige } x, u', v' \in \Sigma^* \text{und } i < j)
+\end{align*}
+
+\end{definition}
+
+\section{Sprache}
+Eine Sprache wird durch eine beliebige Menge von Wörtern über einem festen Alphabet gebildet.
+
+\begin{definition}
+Eine \textbf{Sprache} $L$ über einem Alphabet $\Sigma$ ist eine Teilmenge von $\Sigma*$.\\
+\end{definition}
+
+\begin{itemize}
+  \item $L_\emptyset = \emptyset$ ist die leere Sprache (hat keine Elemente)
+  \item $L_\lambda = \{\lambda\}$ ist die einelementige Sprache, die nur das leere Wort enthält\\
+\end{itemize}
+
+\begin{definition}
+Sind $L_1$ und $L_2$ zwei Sprachen über demselben Alphabet $\Sigma$, so ist
+\[
+L_1 \cdot L_2 = L_1 L_2 = \{vw | v \in L_1, w \in L_2\}
+\]
+die \textbf{Konkatenation} von $L_1$ und $L_2$.\\
+\end{definition}
+
+\begin{definition}
+Ist $L$ eine Sprache über $\Sigma$, so wird definiert:
+\begin{itemize}
+  \item $L^0 = L_\lambda$
+  \item $L^i+1 = L^i \cdot L, \quad \forall i \in \N$
+  \item $L^* = \bigcup_{i \in \N} L^i$ (ist der \textbf{Kleene'sche Stern})
+  \item $L^+ = \bigcup_{i \in \N - \{0\}} L^i = L \cdot L^*$\\
+\end{itemize}
+\end{definition}
+
+\begin{remark}
+\
+\begin{itemize}
+  \item $\Sigma^i = \{w | w \in \Sigma^* \land |w| = i\}$
+  \item $L_\emptyset L = L_\emptyset = \emptyset$
+  \item $L_\lambda L = L$\\
+\end{itemize}
+
+\end{remark}
+
+\begin{lemma}
+Seien $L_1, L_2, L_3$ Sprachen über dem Alphabet $\Sigma$. Dann gilt $L_1 L_2 \cup L_1 L_3 = L_1 (L_2 \cup L_3)$.\\
+\end{lemma}
+
+\begin{lemma}
+Seien $L_1, L_2, L_3$ Sprachen über dem Alphabet $\Sigma$. Dann gilt $L_1 (L_2 \cap L_3) \subseteq L_1 L_2 \cap L_1 L_3$\\
+\end{lemma}
+
+\begin{definition}
+Seien $\Sigma_1, \Sigma_2$ zwei Alphabete. Ein \textbf{Homomorphismus} von $\Sigma_1^*$ nach $\Sigma_2^*$ ist jede Funktion $h: \Sigma_1^* \to \Sigma_2^*$ mit folgenden Eigenschaften:
+\begin{itemize}
+  \item $h(\lambda) = \lambda$
+  \item $h(uv) = h(u) \cdot h(v) \quad \forall u,v \in \Sigma_1^*$\\
+\end{itemize}
+\end{definition}
+
+\begin{remark}
+Um einen Homomorphismus zu spezifizieren reicht es aus für alle Zeichen $a \in \Sigma_1$ $h(a)$ zu definieren.
+\end{remark}
+

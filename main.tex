@@ -1,0 +1,70 @@
+\documentclass[a4paper,titlepage]{report}
+
+%
+% utf8 fix
+%
+\usepackage[utf8]{inputenc}
+
+%
+% amsthm
+%
+\usepackage{amsthm}
+
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Korollar}[section]
+\newtheorem{tipp}{Tipp}[section]
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{satz}{Satz}[section]
+\newtheorem{hilfssatz}{Hilfssatz}[section]
+\newtheorem{remark}{Bemerkung}[section]
+
+%
+% disable paragraph indentation
+%
+\usepackage{parskip}
+
+%
+% other packages
+%
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{enumitem}
+
+%
+% number sets
+%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\powerset}{\mathcal P}
+
+%
+% document
+%
+
+\begin{document}
+
+% title
+\title{Theoretische Informatik Zusammenfassung HS13}
+\author{Gregor Wegberg}
+\date{\today}
+\maketitle
+
+% index
+\tableofcontents
+\clearpage
+
+% chapters
+\input{chapter_2.tex}
+
+\end{document}
