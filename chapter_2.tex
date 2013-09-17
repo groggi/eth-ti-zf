@@ -183,3 +183,56 @@ Seien $\Sigma_1, \Sigma_2$ zwei Alphabete. Ein \textbf{Homomorphismus} von $\Sig
 Um einen Homomorphismus zu spezifizieren reicht es aus für alle Zeichen $a \in \Sigma_1$ $h(a)$ zu definieren.
 \end{remark}
 
+\section{Algorithmische Probleme}
+Ein Programm ist im Grunde eine Abbildung $A$, welche ein Wort über $\Sigma_1$ in ein Wort über $\Sigma_2$ abbildet: $A: \Sigma_1^* \to \Sigma_2^*$. Somit ist sowohl die Eingabe, wie auch die Ausgabe des Programms als Wort kodiert und $A$ bestimmt für jedes Eingabewort ein bestimmtes Ausgabewort.
+
+
+Zwei Programme $A$ und $B$ sind \textbf{äquivalent}, wenn für alle $x \in \Sigma_1^*$ $A(x) = B(x)$ gilt.
+
+\subsection{Entscheidungsproblem}
+\begin{definition}
+Das \textbf{Entscheidungsproblem $(\Sigma, L)$} für ein gegebenes Alphabet $\Sigma$ und eine gegebene Sprache $L \subseteq \Sigma^*$ ist, für jedes $x \in \Sigma^*$ zu entscheiden ob
+\[
+x \in L \text{ oder } x \not\in L.
+\]\\
+\end{definition}
+
+\begin{definition}
+Ein Algorithmus $A$ \textbf{löst} das Entscheidungsproblem $(\Sigma, L)$, falls für alle $x \in \Sigma^*$ gilt:
+\[
+A(x) =
+\begin{cases}
+1, &\text{falls } x \in L \\
+0, &\text{falls } x \not \in L
+\end{cases}
+\]
+In diesem Fall sagt man, dass $A$ die Sprache $L$ \textbf{erkennt}.\\
+\end{definition}
+
+\begin{definition}
+Seien $\Sigma, \Gamma$ zwei Alphabete. Wir sagen, dass ein Algorithmus $A$ eine \textbf{Funktion $f: \Sigma^* \to \Gamma^*$} berechnet, falls
+\[
+\forall x \in \Sigma^*: A(x) = f(x)
+\]\\
+\end{definition}
+
+Das Entscheidungsproblem ist ein Spezialfall einer Funktionsberechnung.
+
+\subsection{Relationsproblem}
+\begin{definition}
+Seien $\Sigma, \Gamma$ zwei Alphabete, und sei $R \subseteq \Sigma^* \times \Gamma^*$ eine Relation. Ein Algorithmus $A$ löst das \textbf{Relationsproblem} $R$, falls für jedes $x \in \Sigma^*$ gilt:
+\[
+(x, A(x)) \in R
+\]
+\end{definition}
+
+\subsection{Optimierungsproblem}
+Ein \textbf{Optimierungsproblem} ist ein 6-Tupel $\mathcal{U} = (\Sigma_I, \Sigma_O, L, \mathcal{M}, \operatorname{cost}, \operatorname{goal})$:
+\begin{itemize}
+  \item $\Sigma_I$ ist das Eingabealphabet
+  \item $\Sigma_O$ ist das Ausgabealphabet
+  \item $L \subseteq \Sigma_I^*$ ist die Sprache der zulässigen Eingaben
+  \item $\mathcal{M}$ ist eine Funktion $\mathcal{M}: L \to \mathcal{P}(\Sigma_O^*)$. Für jedes $x \in L$ ist $\mathcal{M}(x)$ die Menge der zulässigen Lösungen für $x$
+  \item $\operatorname{cost}$ ist eine Funktion $\operatorname{cost}: \bigcup_{x \in L}(\mathcal{M} \times \{x\}) \to \R^+$ und ist die Preisfunktion
+  \item $\operatorname{goal} \in \{\text{Minimum}, \text{Maximum}\}$ ist das Optimierungsziel
+\end{itemize}
