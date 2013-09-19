@@ -227,6 +227,7 @@ Seien $\Sigma, \Gamma$ zwei Alphabete, und sei $R \subseteq \Sigma^* \times \Gam
 \end{definition}
 
 \subsection{Optimierungsproblem}
+\begin{definition}
 Ein \textbf{Optimierungsproblem} ist ein 6-Tupel $\mathcal{U} = (\Sigma_I, \Sigma_O, L, \mathcal{M}, \operatorname{cost}, \operatorname{goal})$:
 \begin{itemize}
   \item $\Sigma_I$ ist das Eingabealphabet
@@ -236,3 +237,68 @@ Ein \textbf{Optimierungsproblem} ist ein 6-Tupel $\mathcal{U} = (\Sigma_I, \Sigm
   \item $\operatorname{cost}$ ist eine Funktion $\operatorname{cost}: \bigcup_{x \in L}(\mathcal{M} \times \{x\}) \to \R^+$ und ist die Preisfunktion
   \item $\operatorname{goal} \in \{\text{Minimum}, \text{Maximum}\}$ ist das Optimierungsziel
 \end{itemize}
+
+Eine zulässige Lösung $\alpha \in \mathcal{M}(x)$ heisst \textbf{optimal} für den Problemfall $x$ des Optimierungsproblems $U$, falls
+\[
+\operatorname{cost}(\alpha, x) = \operatorname{Opt}_\mathcal{U} = \operatorname{goal}\{\operatorname{cost}(\beta, x) | \beta \in \mathcal{M}(x)\}
+\]\\
+\end{definition}
+
+\begin{definition}
+Ein Algorithmus $A$ \textbf{löst} $\mathcal{U}$, falls für jedes $x \in L$:
+\begin{enumerate}
+  \item $A(x) \in \mathcal{M}(x)$ ($A(x)$ ist eine zulässige Lösung des Problemfalls $x$ von $\mathcal{U}$)
+  \item $\operatorname{cost}(A(x), x) = \operatorname{goal}\{\operatorname{cost}(\beta, x) | \beta \in \mathcal{M}(x)\}$
+\end{enumerate}
+
+\end{definition}
+
+\begin{remark}
+Oft wird die Spezifikation von $\Sigma_I, \Sigma_O$ bei Optimierungsproblemen weggelassen. Man geht davon aus, dass die verwendeten Daten kodiert werden können für ein $\Sigma_I, \Sigma_O$. So bleiben noch vier Dinge übrig, die spezifiziert werden müssen:
+\begin{enumerate}
+  \item die Menge der Problemfälle $L$, also die zulässigen Eingaben
+  \item die Menge der Einschränkungen, gegeben durch jeden Problemfall $x \in L$, und damit $\mathcal{M}(x)$ für jedes $x \in L$. $\mathcal{M}(x)$ gibt uns Lösungen, die den Einschränkungen genügen für ein gegebenes $x \in L$
+  \item die Kostenfunktion
+  \item das Optimierungsziel
+\end{enumerate}
+
+\end{remark}
+
+\subsubsection{Beispiel: Traveling Salesman Problem (TSP)}
+\begin{description}
+  \item[Eingabe:] Ein gewichteter Graph $(G, c)$, wobei $G = (V, E)$ ein Graph ist und $c: E \to \N - \{0\}$ die Kostenfunktion. Strikt formal müsste man das Eingabealphabet eingeben und mit diesem den Graphen kodieren.
+  \item[Einschränkungen:] Für jeden Problemfall $(G, c)$ ist $\mathcal{M}(G, c)$ die Menge aller Hamiltonscher Kreise von $G$ mit der Kostenfunktion $e$.
+  \item[Kosten:] Für jeden Hamiltonschen Kreis $H = v_{i_1}, v_{i_2}, \ldots, v_{i_n}, v_{i_1} \in \mathcal{M}(G, c)$:
+    \[
+    \operatorname{cost}((v_{i_1}, v_{i_2}, \ldots, v_{i_n}, v_{i_1}), (G, c)) = \sum_{j = 1}^n c \left (\{v_{i_j}, v_{i_{(j \mod n) + 1}}\} \right )
+    \]
+    Die Kosten jedes Hamiltonschen Kreises ist somit die Summe der Gewichte der besuchten Kanten.
+  \item[Ziel:] Minimum\\
+\end{description}
+
+\begin{definition}
+Ein Optimierungsproblem $\mathcal{U}_1 = (\Sigma_I, \Sigma_O, L', \mathcal{M}, \operatorname{cost}, \operatorname{goal})$ ist ein \textbf{Teilproblem} vom Optimierungsproblem $\mathcal{U}_2 = (\Sigma_I, \Sigma_O, L, \mathcal{M}, \operatorname{cost}, \operatorname{goal})$, falls $L' \subseteq L$.
+\end{definition}
+
+\subsubsection{Knotenüberdeckung}
+\label{sec:knotenueberdeckung}
+\begin{definition}
+Eine \textbf{Knotenüberdeckung} eines Graphen $G = (V, E)$ ist jede Knotenmenge $U \subseteq V$, so dass jede Kante aus $E$ mit mindestens einem Knoten aus $U$ inzident ist. Eine Kante $\{u, v\} \in E$ ist inzident zu $u$ und $v$.
+
+Anders gesagt: Jede Kante muss an mindestens einem Ende in einem Knoten enden, der in der Knotenmenge der Knotenüberdeckung ist.
+\end{definition}
+
+\subsubsection{Beispiel: Maximale Clique Problem (MAX-CL)}
+\begin{definition}
+Eine Clique eines Graphen $G = (V, E)$ ist jede Teilmenge $U \subseteq V$, so dass $\{\{u, v\} | u, v \in V, u \not= v\} \subseteq E$ (die Knoten von $U$ bilden einen vollständigen Teilgraphen von $G$).
+\end{definition}
+
+Das Maximale Clique Problem besteht nun darin eine Clique mit maximaler Kardinalität zu finden. Wir suchen also einen Teilgraphen mit maximaler Anzahl von Knoten.
+
+\begin{description}
+  \item[Eingabe:] Ein (ungerichteter) Graph $G = (V, E)$
+  \item[Einschränkung:] $\mathcal{M}(G) = \{S \subseteq V | \{\{u, v\} | u, v \in S, u \not= v\} \subseteq E\}$
+  \item[Kosten:] Für jedes $S \in \mathcal{M}(G)$ ist $\operatorname{cost}(S, G) = |S|$
+  \item[Ziel:] Maximum
+\end{description}
+
