@@ -127,7 +127,7 @@ u < v \Leftrightarrow \quad & |u| < |v|\\
 Eine Sprache wird durch eine beliebige Menge von Wörtern über einem festen Alphabet gebildet.
 
 \begin{definition}
-Eine \textbf{Sprache} $L$ über einem Alphabet $\Sigma$ ist eine Teilmenge von $\Sigma*$.\\
+Eine \textbf{Sprache} $L$ über einem Alphabet $\Sigma$ ist eine Teilmenge von $\Sigma^*$.\\
 \end{definition}
 
 \begin{itemize}
@@ -147,7 +147,7 @@ die \textbf{Konkatenation} von $L_1$ und $L_2$.\\
 Ist $L$ eine Sprache über $\Sigma$, so wird definiert:
 \begin{itemize}
   \item $L^0 = L_\lambda$
-  \item $L^i+1 = L^i \cdot L, \quad \forall i \in \N$
+  \item $L^{i+1} = L^i \cdot L, \quad \forall i \in \N$
   \item $L^* = \bigcup_{i \in \N} L^i$ (ist der \textbf{Kleene'sche Stern})
   \item $L^+ = \bigcup_{i \in \N - \{0\}} L^i = L \cdot L^*$\\
 \end{itemize}
