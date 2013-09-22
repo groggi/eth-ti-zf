@@ -290,10 +290,10 @@ Anders gesagt: Jede Kante muss an mindestens einem Ende in einem Knoten enden, d
 
 \subsubsection{Beispiel: Maximale Clique Problem (MAX-CL)}
 \begin{definition}
-Eine Clique eines Graphen $G = (V, E)$ ist jede Teilmenge $U \subseteq V$, so dass $\{\{u, v\} | u, v \in V, u \not= v\} \subseteq E$ (die Knoten von $U$ bilden einen vollständigen Teilgraphen von $G$).
+Eine Clique eines Graphen $G = (V, E)$ ist jede Teilmenge $U \subseteq V$, so dass $\{\{u, v\} | u, v \in U, u \not= v\} \subseteq E$ (die Knoten von $U$ bilden einen vollständigen Teilgraphen von $G$).
 \end{definition}
 
-Das Maximale Clique Problem besteht nun darin eine Clique mit maximaler Kardinalität zu finden. Wir suchen also einen Teilgraphen mit maximaler Anzahl von Knoten.
+Das Maximale Clique Problem besteht nun darin eine Clique mit maximaler Kardinalität zu finden. Wir suchen also einen vollständigen Teilgraphen mit maximaler Anzahl von Knoten. Ein vollständiger Teilgraph ist ein Graph $H = (U, F), U \subseteq V, F \subseteq E$, so dass $F$ alle Kanten aus $E$ enthält, die zwei Knoten in $U$ verbinden.
 
 \begin{description}
   \item[Eingabe:] Ein (ungerichteter) Graph $G = (V, E)$
@@ -302,3 +302,44 @@ Das Maximale Clique Problem besteht nun darin eine Clique mit maximaler Kardinal
   \item[Ziel:] Maximum
 \end{description}
 
+\subsubsection{Beispiel: Maximale Erfüllbarkeit (MAX-SAT)}
+Sei $X = \{x_1, x_2, \ldots \}$ die Menge der Bolle'schen Variabeln. Sei $Lit_X = \{x, \overline{x} | x \in X\}$ die Menge der Literale. Dabei ist $\overline{x}$ die negation von $x$. Eine Klausel ist eine beliebig grosse endliche Disjunktion von Literalen (z.B. $x_1 \lor \overline{x_2} \lor x_3$).
+
+Eine Formel ist in \textbf{konjunktiver Normalform (KNF)}, falls sie eine Konjunktion von Klauseln ist. Also eine Konjunktion von Disjunktionen. Beispiel: $(x_1 \lor \overline{x_2} \lor \overline{x_3}) \land (x_4 \lor \overline{x_5})$.
+
+Das Problem der maximalen Erfüllbarkeit ist, für eine gegebene Formel $\Phi$ in KNF, eine Belegung der Variabeln zu finden, die die maximale mögliche Anzahl an Klauseln von $\Phi$ erfüllt.
+
+\begin{description}
+  \item[Eingabe:] Eine Formel $\Phi$ in KNF
+  \item[Einschränkung:] Für jede Formel $\Phi$ über $\{x_{i_1}, x_{i_2}, \ldots, x_{i_n}\}$ ist $\mathcal{M}(\Phi) = \{0, 1\}^n$. Jedes $\alpha = \alpha_1 \alpha_2 \ldots \alpha_n \in \mathcal{M}(\Phi), \alpha_j \in \{0, 1\}$ für $j = 1, 2, \ldots, n$ stellt eine Belegung für die Variable $x_{i_j}$ dar.
+  \item[Kosten:] Für jedes $\Phi$ und jedes $\alpha \in \mathcal{M}(\Phi)$ ist $\operatorname{cost}(\alpha, \Phi)$ die Anzahl der Klauseln, die durch $\alpha$ erfüllt werden.
+  \item[Ziel:] Maximum
+\end{description}
+
+\subsubsection{Beispiel: Ganzzahlige Lineare Programmierung (integer linear programming, ILP)}
+Für ein gegebenes System von linearen Gleichungen und eine lineare Funktion von Unbekannten des linearen Systems soll eine Lösung dieses Systems berechnet werden. Die Lösung soll dabei minimal sein bezüglich der gegebenen linearen Funktion.
+
+\begin{description}
+  \item[Eingabe:] Eine $m \times n$ Matrix $A$ und zwei Vektoren $b = (b_1, \ldots, b_m)^T$ und $c = (c_1, \ldots, c_n)$, wobei die Elemente von $A, b, c$ ganze Zahlen sind.
+  \item[Einschränkung:] $\mathcal{M}(A, b, c) = \{ X = (x_1, \ldots, x_n)^T \in \N^n | AX = b\}$. $\mathcal{M}(A, b, c)$ enthält somit alle Lösungsvektoren $X$ für die $AX = b$ gilt.
+  \item[Kosten:] Für jedes $X = (x_1, \ldots, x_n) \in \mathcal{M}(A, b, c)$ ist $\operatorname{cost}(X, (A, b, c)) = \sum_{i=1}^n c_i x_i$
+  \item[Ziel:] Minimum
+\end{description}
+
+\subsection{Weitere Algorithmische Probleme}
+\begin{definition}
+Sei $\Sigma$ ein Alphabet, $x \in \Sigma^*$. Ein Algorithmus $A$ \textbf{generiert} das Wort $x$, falls $A$ für die Eingabe $\lambda$ die Ausgabe $x$ liefert.\\
+\end{definition}
+
+Das folgende Programm erzeugt beispielsweise das Wort $1001$:
+\begin{lstlisting}
+begin
+  write(1001);
+end
+\end{lstlisting}
+
+Ein solches Programm kann als alternative Darstellung des Wortes verwendet werden.\\
+
+\begin{definition}
+Sei $\Sigma$ ein Alphabet und $L \subseteq \Sigma^*$ eine Sprache. Ein \textbf{Aufzählungsalgorithmus $A$ für $L$} gibt für die Eingabe $n \in \N - \{0\}$ die Wortfolge $x_1, x_2, \ldots, x_n$ aus, wobei $x_1, x_2, \ldots, x_n$ die kanonisch ersten $n$ Wörter aus $L$ sind.
+\end{definition}
