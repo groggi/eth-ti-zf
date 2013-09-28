@@ -1,0 +1,90 @@
+\chapter{Endliche Automaten}
+\begin{itemize}
+  \item Endliche Automaten sind das einfachste Berechnungsmodell, welches in der Informatik betrachtet wird.
+  \item Sie entsprechen speziellen Programmen, die Entscheidungsprobleme lösen.
+  \item Endliche Automaten verwenden dabei keine Variabeln.
+  \item Die Eingabe wird nur einmal von links nach rechts gelesen.
+  \item Nach dem Lesen des letzten Buchstabens steht das Resultat sofort fest.
+\end{itemize}
+
+\section{Darstellung endlicher Automaten}
+\begin{definition}
+Ein (deterministischer) \textbf{endlicher Automat (EA)} ist ein Quintupel $M = (Q, \Sigma, \delta, q_0, F)$:
+\begin{itemize}
+  \item $Q$ ist eine endliche Menge von \textbf{Zuständen}
+  \item $\Sigma$ ist ein Alphabet, welches als \textbf{Eingabealphabet} bezeichnet wird
+  \item $q_0 \in Q$ ist der \textbf{Anfangszustand}
+  \item $F \subseteq Q$ ist die \textbf{Menge der akzeptierenden Zustände}
+  \item $\delta$ eine Funktion $\delta: Q \times \Sigma \to Q$, welche als \textbf{Übergangsfunktion} bezeichnet wird. Daher bedeutet $\delta(q_i, a) = p$, dass falls $M$ im Zustand $q_i \in Q$ den Buchstaben $a \in \Sigma$ liest, es in den Zustand $p \in Q$ übergeht.\\
+\end{itemize}
+
+\end{definition}
+
+\begin{definition}
+Eine \textbf{Konfiguration} von $M$ ist ein Element aus $Q \times \Sigma^*$. Falls $M$ in der Konfiguration $(q_i, w) \in Q \times \Sigma^*$ ist, so bedeutet es, dass $M$ aktuell im Zustand $q_i \in Q$ ist und noch den Suffix $w \in Sigma^*$ des Eingabeworts zu lesen hat.
+
+Die Konfiguration $(q_0, x) \in \{q_0\} \times \Sigma^*$ nennt man eine \textbf{Startkonfiguration} von $M$ auf $x$. Die Berechnung des Worts $x$ beginnt somit an der Startkonfiguration $q_0$.\\
+\end{definition}
+
+\begin{definition}
+Eine \textbf{Endkonfiguration} von $M$ hat die Form $(q_i, \lambda) \in Q \times \{ \lambda \}$\\
+\end{definition}
+
+\begin{definition}
+Ein \textbf{Schritt} von $M$ ist eine Relation $\vdash_M \subseteq (Q \times \Sigma^*) \times (Q \times \Sigma^*)$ und ist definiert durch
+\[
+(q, w) \vdash_{M} (p, x) \Leftrightarrow w = ax,\ a \in \Sigma \land \delta(q, a) = p
+\]
+
+Es handelt sich somit um eine Relation auf Konfigurationen des EA $M$. Es beschreibt den Übergang von einer Konfiguration in die nächste, nachdem der nächste Buchstabe von $w$ (hier der Buchstabe $a$) gelesen wurde.\\
+\end{definition}
+
+\begin{definition}
+Eine \textbf{Berechnung} $C$ von $M$ ist eine endliche Folge $C = C_0, C_1, C_2, C_3, \ldots, C_n$ von Konfigurationen ($C_i \in (Q \times \Sigma^*),\ i=0 \ldots n$), so dass $C_i \vdash_M C_{i+1}$ gilt für alle $0 \leq i \leq n-1$.
+
+Falls $C_0 = (q_0, x)$ und $C_n \in Q \times \{ \lambda \}$, so ist $C$  die Berechnung von $M$ auf einer Eingabe $x \in \Sigma^*$.
+
+Falls $C_n \in F \times \{ \lambda \}$, so sagen wir, dass $C$ eine \textbf{akzeptierende Berechnung} von $M$ auf $x$ ist, und dass $M$ das Wort $x$ akzeptiert.
+
+Falls $C_n \in (Q - F) \times \{ \lambda \}$, so ist $C$ eine \textbf{verwerfende Berechnung} von $M$ auf $x$, und dass $M$ das Wort $x$ verwirft.\\
+\end{definition}
+
+\begin{definition}
+Die von $M$ akzeptierte Sprache $L(M)$ ist definiert als
+\[
+L(M) := \{ w \in \Sigma^* | \text{ die Berechnung von $M$ auf $w$ endet in einer Endkonfiguration $(q, \lambda)$ mit $q \in F$} \}
+\]
+\end{definition}
+
+\begin{definition}
+$\mathcal{L}(EA) = \{L(M) | M \text{ ist ein EA} \}$ ist die Klasse der Sprachen, die von endlichen Automaten akzeptiert werden. $\mathcal{L}(EA)$ bezeichnet man auch als die \textbf{Klasse der regulären Sprachen}, und jede Sprache $L$ aus $\mathcal{L}(EA)$ als \textbf{regulär}.\\
+\end{definition}
+
+\begin{definition}
+Sei $M$ ein EA. Wir definieren $\vdash_M^*$ als die reflexive und transitive Hülle der Schrittrelation $\vdash_M$ von $M$. Somit gilt
+\[
+(q, w) \vdash_M^* (p, u) \Leftrightarrow (q = p \land w = u) \lor \exists k \in \N - \{0\} \text{ so dass}
+\]
+\begin{itemize}
+  \item $w = a_1 a_2 a_3 a_4 \ldots a_k u, \ a_i \in \Sigma \ i = 1, \ldots, k$ und
+  \item $\exists r_1, r_2, \ldots, r_{k-1} \in Q$, so dass
+  $(q, w) \vdash_M (r_1, a_2\ldots a_k u) \vdash_M (r_2, a_3 \ldots a_k u) \vdash_M \ldots \vdash_M (r_{k-1}, a_k u) \vdash_M (p, u)$
+\end{itemize}
+
+$(q, w) \vdash_M^* (p, u)$ sagt also aus, dass es eine Berechnung von $M$ gibt, die ausgehen von der Konfiguration $(q, w)$ zur Konfiguration $(p, u)$ führt.\\
+\end{definition}
+
+\begin{definition}
+Sei $\hat{\delta}: Q \times \Sigma^* \to Q$ definiert durch:
+\begin{itemize}
+  \item $\hat\delta(q, \lambda) = q$ für alle $q \in Q$
+  \item $\hat\delta(q, wa) = \delta(\hat\delta(q, w), a)$ für alle $a \in \Sigma,\ w \in \Sigma^*,\ q \in Q$
+\end{itemize}
+
+Wenn $M$ im Zustand $q$ ist und das Wort $w$ zu lesen beginnt, dann bedeutet $\hat\delta(q, w) = p$ dass $M$ im Zustand $p$ enden wird. Oder anders gesagt, es gilt: $(q, w) \vdash_M^* (p, \lambda)$.
+
+Gekürzt können wir nun $L(M)$ wie folgt definieren:
+\[
+L(M) = \{ w \in \Sigma^* \ |\ (q_0, w) \vdash_M^* (p, \lambda),\ p \in F \} = \{ w \in \Sigma^* \ |\ \hat\delta(q_0, w) \in F \}
+\]\\
+\end{definition}
