@@ -30,18 +30,24 @@
 %
 % other packages
 %
-\usepackage{amssymb}
-\usepackage{amsfonts}
-\usepackage{amsmath}
-\usepackage{enumitem}
-\usepackage{hyperref}
+\usepackage{
+  amssymb,
+  amsfonts,
+  amsmath,
+  enumitem,
+  hyperref,
+  todonotes
+}
 
 %
 % listings
 %
 \usepackage{listings}
 
-\lstset{language=Pascal}
+\lstset{
+  language=Pascal,
+  escapeinside={||}
+}
 
 %
 % number sets
@@ -77,8 +83,13 @@
 \tableofcontents
 \clearpage
 
+% todo list
+\listoftodos
+\clearpage
+
 % chapters
 \input{chapter_2.tex}
+\input{chapter_3.tex}
 \input{extras.tex}
 \input{vorlesung.tex}
 

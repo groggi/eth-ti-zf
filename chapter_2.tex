@@ -213,7 +213,7 @@ In diesem Fall sagt man, dass $A$ die Sprache $L$ \textbf{erkennt}.\\
 Seien $\Sigma, \Gamma$ zwei Alphabete. Wir sagen, dass ein Algorithmus $A$ eine \textbf{Funktion $f: \Sigma^* \to \Gamma^*$} berechnet, falls
 \[
 \forall x \in \Sigma^*: A(x) = f(x)
-\]\\
+\]
 \end{definition}
 
 Das Entscheidungsproblem ist ein Spezialfall einer Funktionsberechnung.
@@ -343,3 +343,83 @@ Ein solches Programm kann als alternative Darstellung des Wortes verwendet werde
 \begin{definition}
 Sei $\Sigma$ ein Alphabet und $L \subseteq \Sigma^*$ eine Sprache. Ein \textbf{Aufzählungsalgorithmus $A$ für $L$} gibt für die Eingabe $n \in \N - \{0\}$ die Wortfolge $x_1, x_2, \ldots, x_n$ aus, wobei $x_1, x_2, \ldots, x_n$ die kanonisch ersten $n$ Wörter aus $L$ sind.
 \end{definition}
+
+\section{Kolmogorov-Komplexität}
+\begin{definition}
+Für jedes Wort $x \in \Sigma_\text{bool}^*$ ist die \textbf{Kolmogorov-Komplexität $K(x)$} des Wortes $x$ die binäre Länge des kürzesten Pascal-Programms, das $x$ generiert.
+\end{definition}
+
+\begin{lemma}
+Es existiert eine Konstante $d$, so dass für jedes $x \in \Sigma_\text{bool}^*$
+\[
+K(x) \leq |x| + d
+\]
+\end{lemma}
+
+Die Länge eines solchen Programms ist also nicht wesentlich länger als das Wort selbst. Wir können für jedes Wort $x \in \Sigma_\text{bool}^*$ das Programm
+\begin{lstlisting}
+begin
+  write(x);
+end
+\end{lstlisting}
+
+Man sieht, dass bloss das Wort $x$ variabel im Programm ist und der Rest eine fixe Länge hat.
+
+Das Wort $x$ wird im Programm in binärer Form eingefügt und leistet deswegen zur binären Darstellung des Programms nur den Beitrag $|x|$.\\
+
+\begin{remark}
+Für ein Wort $x \in \Sigma_\text{bool}^*$ braucht das Abspeichern von $\operatorname{Bin}(|x|)$ so viel Platz: $\lceil \log_2 (\operatorname{Bin}(|x|) + 1) \rceil$
+\end{remark}
+
+\subsection{Beispiel \#1}
+Um die Wörter der Form $y_n = 0^n \in \{0, 1\}^*$ für jedes $n \in \N - \{0\}$ zu generieren, könnte das folgende Programm eingesetzt werden:
+\begin{lstlisting}
+begin
+  for l = 1 to |$n$| do
+    write(0);
+end
+\end{lstlisting}
+
+Wobei sich je nach Wort nur die Kodierung von $n$ im Programm verändert. Somit erhalten wir für die Länge der Kodierung von $n$: $\lceil \log_2(n + 1) \rceil$. Dies gibt uns eine Kolmogorov-Komplexität von $K(y_n) \leq \lceil \log_2(n+1) \rceil + c = \lceil \log_2 |y_n| \rceil + c$
+
+\subsection{Beispiel \#2}
+Das Wort $z_n = 0^{n^2} \in \{0, 1\}^*$ für jedes $n \in \N - \{0\}$ kann durch folgendes Programm dargestellt werden:
+\begin{lstlisting}
+begin
+  M := n;
+  M := M |$\times$| M;
+  for l = 1 to M do
+    write(0);
+end
+\end{lstlisting}
+
+Hier ist wieder bloss $n$ abhängig vom Wort, der Rest des Programms hat eine feste Länge. Wir erhalten somit
+\[
+K(z_n) \leq \lceil \log_2 (n+1) \rceil + d \leq \lceil \log_2 (\sqrt{|z_n|}) \rceil + d + 1
+\]
+
+\subsection{Weiteres}
+\begin{definition}
+Die Kolmogorov-Komplexität einer natürlichen Zahl $n$ ist $K(n) = K(\operatorname{Bin(n)})$.
+\end{definition}
+
+\begin{lemma}
+Für jede Zahl $n \in \N - \{0\}$ existiert ein Wort $w_n \in (\Sigma_\text{bool}^n$, so dass $K(w_n) \geq |w_n| = n$, es existiert somit für jede Zahl $n$ ein nichtkomprimierbares Wort der Länge $n$.\\
+\end{lemma}
+
+\begin{satz}
+Seien $A$ und $B$ zwei Programmiersprachen. Dann existiert die Konstante $c_{A, B}$, die nur von $A$ und $B$ abhängig ist, so dass:
+\[
+|K_A(x) - K_B(x)| \leq c_{A, B} \quad \forall x \in \Sigma_\text{bool}^*
+\]
+
+Daraus folgt, dass die verwendete Programmiersprache nicht relevant ist für die Berechnung der Kolmogorov-Komplexität.\\
+\end{satz}
+
+\begin{definition}
+Ein Wort $x \in \Sigma_\text{bool}^*$ ist \textbf{zufällig}, falls $K(x) \geq |x|$.
+
+Eine Zahl $n \in \N$ ist zufällig, falls $K(n) = K(\operatorname{Bin}(n)) \geq \lceil \log_2(n+1) \rceil -1$.
+\end{definition}
+
+\todo[inline]{Satz 2.2, Satz 2.3 (Primzahlsatz)}
