@@ -88,3 +88,105 @@ Gekürzt können wir nun $L(M)$ wie folgt definieren:
 L(M) = \{ w \in \Sigma^* \ |\ (q_0, w) \vdash_M^* (p, \lambda),\ p \in F \} = \{ w \in \Sigma^* \ |\ \hat\delta(q_0, w) \in F \}
 \]\\
 \end{definition}
+
+\section{Simulation}
+\begin{lemma}
+Sei $\Sigma$ ein Alphabet und $M_1 = (Q_1, \Sigma, \delta_1, q_{01}, F_1), M_2 = (Q_2, \Sigma, \delta_2, q_{02}, F_2)$ zwei EA. Für $\circledcirc \in \{\cup, \cap, -\}$ existiert jeweils ein EA $M$ mit $L(M) = L(M_1) \circledcirc L(M_2)$.
+\end{lemma}
+
+\begin{proof}
+Die Existenz von $L(M)$ basiert auf der Idee einer Konstruktion von $M$ in welchem $M_1$ und $M_2$ simuliert werden. Dabei sind die Zustände von $M$ Paare der Form $(q, p) \in Q_1 \times Q_2$.
+
+Formale konstruktion von $M$: Sei $M = (Q, \Sigma, \delta, q_0, F_\circledcirc)$ und:
+\begin{itemize}
+  \item $Q = Q_1 \times Q_2$
+  \item $q_0 = (q_{01}, q_{02})$
+  \item $\forall q \in Q_1, p \in Q_2, a \in \Sigma:\, \delta((q, p), a) = (\delta_1(q, a), \delta_2(p, a))$
+  \item F ist:
+  \begin{itemize}
+    \item Falls $\circledcirc = \cup$, dann ist $F = F_1 \times Q_2 \cup Q_1 \times F_2$
+    \item Falls $\circledcirc = \cap$, dann ist $F = F_1 \times F_2$
+    \item Falls $\circledcirc = -$, dann ist $F = F_1 \times (Q_2 - F_2)$
+  \end{itemize}
+\end{itemize}
+
+Um nun zu beweisen, dass ein solcher EA $M$ für die Operation $\circledcirc$ existiert, reicht es zu zeigen dass folgende Gleichheit gilt: $\forall x \in \Sigma^*: \hat\delta((q_{01}, q_{02}), x) = (\hat\delta_1(q_{01}, x), \hat\delta_2(q_{02}, x))$. Der Beweis kann mittels Induktion über der Länge von $x$ geführt werden.
+\end{proof}
+
+Diese Entwurfsmethode kann dazu eingesetzt werden endliche Automaten für komplexere Sprachen zu bauen, in dem EA für einfachere Sprachen zusammengesetzt werden. So kann die Sprache $L = \{x \in \Sigma_\text{bool}^* |\ |x|_0 \mod 3 = 1, |x|_1 \mod 3 = 2\}$ aus den Sprachen $L_1 = \{x \in \Sigma_\text{bool}^* |\ |x|_0 \mod 3 = 1\}$ und $L_2 = \{x \in \Sigma_\text{bool}^* |\ |x|_1 \mod 3 = 2\}$ konstruiert werden.
+
+\section{Beweise der Nichtexistenz}
+\subsection{Lemma 3.3}
+\begin{lemma}[Lemma 3.3]
+Sei $A = (Q, \Sigma, \delta_A, q_0, F)$ ein EA. Seien weiter $x, y \in \Sigma^*, x \not= y$, so dass $(q_0, x) \vdash_A^* (p, \lambda) \land (q_0, y) \vdash_A^* (p, \lambda)$ für ein $p \in Q$. Dann gilt für jedes $z \in \Sigma^*:\, xz \in L(A) \Leftrightarrow yz \in L(A)$.
+\end{lemma}
+
+Anders ausgedrückt: Wenn wir zwei Wörter betrachten, die im EA $A$ im selben Zustand landen, so haben wir ab diesem Moment keine Information mehr, welches der beiden Wörter wir gelesen haben. Konkatinieren wir nun ein Wort $z \in \Sigma^*$ zu den beiden ausgewählten Wörtern, so müssen beide Wörter in $L(A)$ sein oder beide nicht.
+
+Dieses Lemma kann dazu eingesetzt werden zu zeigen, dass eine Sprache nicht regulär ist ($L \not\in \mathcal{L}(EA)$). Dazu führt man den Beweis indirekt und nimmt an, dass $L$ regulär sei und wendet das Lemma an. Dabei wird festgestellt, dass es ein $z$ gibt, für welches $xz \in L$, aber $yz \not\in L$, was ein Wiederspruch ist.
+
+\subsubsection{Beispiel}
+Es sei zu zeigen, dass $L = \{0^n1^n | n \in \N\}$ nicht regulär ist.
+\begin{proof}
+Wir führen den Beweis indirekt mittels dem Lemma 3.3. Sei $L \in \mathcal{L}(EA)$. Somit existiert ein EA $A = (\Q, \Sigma, \delta, q_0, F)$ mit $L(A) = L$.
+
+Wir betrachten die Wörter $0^1, 0^2, \ldots, 0^{|Q|+1}$. Wir haben somit $|Q| + 1$ Wörter. Somit existieren $i, j \in \{1, 2, \ldots |Q| + 1\}, i < j$, so dass $\hat\delta(q_0, 0^i) = \hat\delta(q_0, 0^j)$. Nach Lemma 3.3 hat nun zu gelten: $\forall z \in \Sigma^*: 0^i z \in L \Leftrightarrow 0^j z \in L$. Dem ist aber nicht so. Für $z = 1^i$ erhalten wir: $0^i 1^i \in L$, aber auch $0^j 1^i \not\in L$ ($i < j$).
+
+Somit ist $L \not\in \mathcal{L}(EA)$.
+\end{proof}
+
+\subsection{Pumping-Lemma}
+\begin{lemma}[Pumping-Lemma für reguläre Sprachen]
+Sei $L$ regulär. Dann existiert die Konstante $n_0 \in \N$, so dass jedes Wort $w \in \Sigma^*$ mit $|w| \geq n_0$ zerlegt werden kann in $w = y x z$, mit
+\begin{itemize}
+  \item $|yz| \leq n_0$,
+  \item $|x| \geq 1$ und
+  \item entweder $\{xy^kz | k \in \N\} \subseteq L$ oder $\{xy^kz | k \in \N \} \cap L = \emptyset\}$.
+\end{itemize}
+
+\end{lemma}
+
+\subsubsection{Beispiel}
+Es sei zu zeigen, dass $L = \{0^n 1^n | n \in \N\}$ nicht regulär ist.
+
+\begin{proof}
+Wir führen den Beweis indirekt mittels des Pumping-Lemmas. Sei $L \in \mathcal{L}(EA)$. Dann existiert eine Konstante $n_0$ mit den im Pumping-Lemma beschriebenen Eigenschaften. Wir betrachten das Wort $w = 0^{n_0} 1^{n_0}$. Es gilt offensichtlich, dass $|w| \geq n_0$. Somit kann $w$ zerlegt werden in $w = y x z$.
+
+Bedingt durch die Eigenschaft $|yz| \leq n_0$ gilt hier, dass $y = 0^l$ und $z = 0^m$ für $l, m \in \N$. Bedingt durch die zweite Eigenschaft $|x| \geq 1$ ist $m \not= 0$. Nun prüfen wir ob mit diesen Eigenschaften, auch die dritte Pumping-Lemma Eigenschaft gilt. Wir erhalten also $\{ y x^k z | z \in \N\} = \{ 0^{n_0 - l} (0^m)^k 1^{n_0} | k \in \N \} = \{ 0^{n_0 - m + km} 1^{n_0} | k \in \N \}$. Wählen wir $k = 0$, so erhalten wir das Wort $0^{n_0 - m} 1^{n_0}$, was nicht in $L$ liegt, da $m \not= 0$. Für $k = 1$ hingegen liegt das Wort in $L$. Dies ist ein Wiederspruch. Somit ist $L$ nicht regulär.
+\end{proof}
+
+\subsection{Kolmogorov-Komplexität}
+\todo[inline]{... to add ...}
+
+\section{Nichtdeterminismus}
+Determinismus bei einem deterministischen endlichen Automaten besagt, dass in jeder Konfiguration des EA eindeutig festgelegt ist, was im nächsten Schritt passiert. Somit bestimmt ein EA und ein Wort $x$ eindeutig die Berechnung von $x$ auf dem EA. Beim Nichtdeterminismus hingegen ist es erlaubt bei einer Konfiguration eine Auswahl an möglichen weiteren Schritten zu haben.
+
+\begin{definition}
+Ein \textbf{nichtdeterministischer endlicher Automat (NEA)} ist ein Quintupel $M = (Q, \Sigma, \delta, q_0, F)$ mit
+\begin{itemize}
+  \item $Q$ eine endliche Menge von Zuständen
+  \item $\Sigma$ ist das Eingabealphabet
+  \item $q_0 \in Q$ der Anfangszustand,
+  \item $F \subseteq Q$ die Menge der akzeptierenden Zustände
+  \item $\delta$ eine Funktion $\delta: Q \times \Sigma \to \mathcal{P}(Q)$. Die Übergangsfunktion.\\
+\end{itemize}
+\end{definition}
+
+Man bemerkt, dass $Q, \Sigma, q_0, F$ die gleiche Bedeutungen haben bei einem EA wie auch bei einem NEA.\\
+
+Der Unterschied liegt also in der $\delta$-Funktion, welche als Wertebereich nicht $Q$, sondern $\mathcal{P}(Q)$ hat. Darin liegt auch der zentrale Unterschied. Ein Übergang kann in beliebig vielen Zuständen enden, oder keinem.
+
+Ein NEA akzeptiert ein Wort, falls es eine Berechnung gibt, die in einem Zustand $p \in F$ landet. Es ist dabei egal, wo alle alternativen Berechnungen enden. Es reicht, wenn eine in einem akzeptierenden Zustand landet.\\
+
+\begin{definition}
+Zur Übergangsfunktion $\delta$ wird $\hat\delta: Q \times \Sigma^* \to \mathcal{P}(Q)$ wie folgt definiert:
+\begin{itemize}
+  \item $\hat\delta(q, \lambda) = \{q\} \forall q \in Q$
+  \item $\hat\delta(q, wa) = \{p | \text{ es existiert ein } r \in \hat\delta(q, w), \text{ so dass } p \in \delta(r, a)\} = \bigcup_{r \in \hat\delta(q, w)} \delta(r, a)$\\
+\end{itemize}
+
+\end{definition}
+
+Aus der Definition sieht man, dass $\delta(q, w)$ jeweils die Menge aller Zustände aus $Q$ liefert, die aus $q \in Q$ durch das vollständige Lesen von $w$ erreichbar sind. Somit erhalten wir für einen NEA $M$: $L(M) = \{ w \in \Sigma^* |\ \hat\delta(q_0, w) \cap F \not= \emptyset \}$.
+
+\todo[inline]{... Seite 113}
