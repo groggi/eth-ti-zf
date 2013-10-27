@@ -1,0 +1,122 @@
+\chapter{Grammatiken und Chomsky-Hierarchie}
+Buchkapitel 10.1 bis und mit 10.3 sind Teil des ersten Selbststudiums
+
+\section{Einleitung}
+Endliche Automaten (EA) und Turingmaschinen (TM) erlauben es unendliche Objekte wie Sprachen und Mengen in endlicher Form zu beschreiben. Grammatiken sind eine weitere Möglichkeit Sprachen in endlicher und eindeutiger Weise zu beschreiben.
+
+\section{Grammatiken}
+
+\todo[inline]{Beispiel 10.1?}
+
+\begin{definition}
+Eine Grammatik $G$ ist ein 4-Tupel $G = (\Sigma_N, \Sigma_T, P, S)$ wobei die Bedeutung folgende ist:
+\begin{itemize}
+  \item Das Alphabet $\Sigma_N$ ist das \textbf{Nichtterminalalphabet}. Die Symbole aus $\Sigma_N$ nennt man \textbf{Nichtterminale}.
+  \item Das Alphabet $\Sigma_T$ ist das \textbf{Terminalalphabet}. Die Symbole aus $\Sigma_T$ nennt man \textbf{Terminalsymbole}.
+  \item $S \in \Sigma_N$ und ist das \textbf{Startsymbol}. Somit muss die Generierung eines Wortes jeweils mit dem Wort $w = S$ beginnen.
+  \item $P$ ist eine endliche Teilmenge von $\Sigma^* \Sigma_N \Sigma^* \times \Sigma^*$ wobei $\Sigma = \Sigma_N \cup \Sigma_T$ ist. Die Elemente von $P$ heissen \textbf{Regeln}. Statt $(\alpha, \beta) \in P$ zu schreiben, wird meist $\alpha \to_G \beta$ geschrieben. Wobei die Bedeutung wie folgt ist: $\alpha$ kann in $G$ durch $\beta$ ersetzt werden.\\
+\end{itemize}
+\end{definition}
+
+\begin{remark}
+In dieser Vorlesung gilt:
+\begin{itemize}
+  \item Kleinbuchstaben $a, b, c, d, e$ und Ziffern werden für Terminalsymbole verwendet.
+  \item Grossbuchstaben $A, B, C, D, X, Y, Z$ werden für Nichtterminale verwendet.
+  \item Mit Kleinbuchstaben $u, v, w, x, y, z$ werden Wörter über $\Sigma_T$ bezeichnet.
+  \item Mit griechischen Kleinbuchstaben ($\alpha, \beta, \gamma, \ldots$) werden beliebige Wörter über $\Sigma = \Sigma_T \cup \Sigma_N$ bezeichnet.\\
+\end{itemize}
+\end{remark}
+
+\begin{remark}
+Folgende Dinge sind zu beachten:
+\begin{itemize}
+  \item Es hat jeweils $\Sigma_N \cap \Sigma_T = \emptyset$ zu gelten.
+  \item Durch die Anforderung $\alpha \in \Sigma^* \Sigma_N \Sigma^*$ muss $\alpha$ mindestens ein Nichtterminal enthalten.\\
+\end{itemize}
+\end{remark}
+
+\begin{definition}
+Sei $\gamma, \delta \in (\Sigma_N \cup \Sigma_T)^*$. $\delta$ ist aus $\gamma$ in einem Ableitungsschritt in $G$ ableitbar, $\gamma \Rightarrow_G \delta$, genau dann, wenn $\omega_1, \omega_2 \in (\Sigma_N \cup \Sigma_T)^*$ und eine Regel $(\alpha, \beta) \in P$ existieren, so dass gilt: $\gamma = \omega_1 \alpha \omega_2$ und $\delta = \omega_1 \beta \omega_2$.\\
+
+$\delta$ ist aus $\gamma$ ableitbar in $G$, $\gamma \Rightarrow_G^* \delta$, genau dann wenn
+\begin{itemize}
+  \item entweder $\gamma = \delta$,
+  \item oder für ein $n \in \N - \{0\}$ und $n+1$ Wörter $\omega_1, \omega_2, \ldots, \omega_n \in (\Sigma_N \cup \Sigma_T)^*$ existieren, so dass $\gamma = \omega_0, \delta = \omega_n$ und $\omega_i \Rightarrow_G \omega_{i+1}$ für $i = 0, 1, 2, \ldots, n - 1$.
+\end{itemize}
+In anderen Worten: Falls $\gamma \Rightarrow_G^* \delta$ gilt, so gibt es eine Folge von Ableitungsschritten, die bei $\gamma = \omega_1$ beginnt und bei $\delta = \omega_n$ endet.
+
+Somit ist $\Rightarrow_G^*$ die reflexive und transitive Hülle von $\Rightarrow_G$.\\
+\end{definition}
+
+\begin{definition}
+Falls $\omega \in \Sigma_T^*$ und $S \Rightarrow_G^* \omega$ gilt, dann sagt man, dass $\omega$ von $G$ erzeugt wird. Die von $G$ erzeugte Sprache ist somit $L(G) = \{\omega \in \Sigma_T^* | S \Rightarrow_G^* \omega\}$.
+\end{definition}
+
+\begin{remark}
+Sei $\alpha \Rightarrow_G^i \beta$ eine Ableitung im Sinne von $\alpha \Rightarrow_G^* \beta$, die aus genau $i$ Schritten besteht.
+\end{remark}
+
+Grammatiken sind nichtdeterministische Erzeugungsmechanismen für Sprachen. Dies kommt daher, dass es mehrere gleiche linke Seiten geben darf und die Wahl der Anwendung einer dieser nicht festgelegt ist.
+
+\todo[inline]{Beweistypen einbauen}
+
+\section{Chomsky-Hierarchie}
+\begin{definition}
+Sei $G = (\Sigma_N, \Sigma_T, P, S)$ eine Grammatik
+\begin{itemize}
+  \item $G$ ist eine \textbf{Typ-0-Grammatik}. Die Typ-0-Grammatik ist die Klasse aller uneingeschränkten Grammatiken.
+  \item $G$ ist \textbf{kontextsensitiv} oder \textbf{Typ-1-Grammatik}, falls $\forall (\alpha, \beta) \in P: \, |\alpha| \leq |\beta|$ gilt. Es gibt somit nicht die Möglichkeit ein Teilwort $\alpha$ durch ein kürzeres Teilwort $\beta$ zu ersetzen.
+  \item $G$ ist \textbf{kontextfrei} oder \textbf{Typ-2-Grammatik}, falls $\forall (\alpha, \beta) \in P: \, \alpha \in \Sigma_N \land \beta \in (\Sigma_N \cup \Sigma_T)^*$ gilt. Alle Regeln haben also die Grundform $X \to \beta$ für ein Nichtterminal $X \in \Sigma_N$.
+  \item $G$ ist \textbf{regulär} oder \textbf{Typ-3-Grammatik}, falls $\forall (\alpha, \beta) \in P: \, \alpha \in \Sigma_N \land \beta \in (\Sigma_T^* \cdot \Sigma_N \cup \Sigma_T^*)$. Somit haben alle Regeln einer regulären Grammatik entweder die Form $X \to u$ oder $X \to uY$ für $u \in \Sigma_T^*$ und $X, Y \in \Sigma_N$. Auch ist anzumerken, dass das Nichtterminal immer ganz rechts auf der rechten Seite zu stehen hat.\\
+\end{itemize}
+\end{definition}
+
+\begin{remark}
+Eine Sprache ist vom Typ $i$ ($i = 0, 1, 2, 3$), falls sie durch eine Typ-$i$-Grammatik erzeugt werden kann.\\
+\end{remark}
+
+Kontextfreie Sprachen haben die Eigenschaft, dass Nichtterminale unabhängig von den benachbarten Symbolen ersetzt werden können.
+
+\section{Reguläre Grammatiken und endliche Automaten}
+
+\begin{lemma}
+$\mathcal{L}_3$ enthält alle endlichen Sprachen.\\
+\end{lemma}
+
+\begin{lemma}
+$\mathcal{L}_3$ ist abgeschlossen bezüglich der Vereinigung. Somit gilt für alle Sprachen $L_1, L_2 \in \mathcal{L}_3: \, L_1 \cup L_2 \in \mathcal{L}_3$.\\
+\end{lemma}
+
+\begin{lemma}
+$\mathcal{L}_3$ ist abgeschlossen bezüglich der Konkatenation. Somit gilt für alle Sprachen $L_1, L_2 \in \mathcal{L}_3: \, L_1 \cdot L_2 \in \mathcal{L}_3$.\\
+\end{lemma}
+
+\begin{satz}
+Zu jedem endlichen Automaten (EA) $A$ existiert eine reguläre Grammatik $G$ mit $L(A) = L(G)$.
+\end{satz}
+
+\begin{definition}
+Eine reguläre Grammatik (Typ-3-Grammatik) $G = (\Sigma_N, \Sigma_T, P, S)$ heisst \textbf{normiert}, wenn alle Regeln der Grammatik nur eine der folgenden drei Formen haben:
+\begin{itemize}
+  \item $S \to \lambda$, wobei $S$ das Startsymbol ist
+  \item $A \to a$, wobei $A \in \Sigma_N$ und $a \in \Sigma_T$
+  \item $B \to bC$, wobei $B, C \in \Sigma_N$ und $b \in \Sigma_T$\\
+\end{itemize}
+\end{definition}
+
+\begin{lemma}
+Für jede reguläre Grammatik $G$ existiert eine äquivalente \textbf{normierte} reguläre Grammatik $G'$.\\
+\end{lemma}
+
+Eine nicht normierte reguläre Grammatik $G$ kann dabei wie folgt in eine äquivalente und normierte reguläre Grammatik $G'$ überführt werden:
+\begin{itemize}
+  \item \textbf{Kettenregeln:} Regeln der Form $X \to Y, \, X, Y \in \Sigma_N$ enden nach endlich vielen Ableitungsschritten in $\alpha \in (\Sigma_T^* \cup \Sigma_T^+ \cdot \Sigma_N)$. Somit ersetzen wir $X \to Y$ durch $X \to \alpha$.
+  \item Alle Regeln der Form $A \to \lambda$ für $A \in \Sigma_N - \{S\}$. In einer normierten regulären Grammatik darf nur aus dem Startsymbol das leere Wort abgeleitet werden. Dazu betrachten wir die Regeln $B \to \omega A, \, A \to \lambda$ womit durch das hinzufügen der Regel $B \to \omega$ und entfernen der Regel $A \to \lambda$ das Problem gelöst wird.\\
+\end{itemize}
+
+\begin{satz}
+$\mathcal{L}_3 = \mathcal{L}(EA)$
+\end{satz}
+
+
