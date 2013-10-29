@@ -1,0 +1,173 @@
+\chapter{Berechenbarkeit}
+\section{Die Methode der Diagonalisierung}
+\begin{definition}
+Seien \(A, B\) zwei Mengen.
+\begin{itemize}
+  \item \(|A| \leq |B|\), falls eine injektive Funktion \(f: A \to B\) existiert.
+  \item \(|A| = |B|\), falls eine eine Bijektion \(f: A \to B\) bzw. \(f': B \to A\) existiert. Dies ist gleichbedeutend mit der Anforderung, dass \(|A| \leq |B| \land |B| \leq |A|\) ist.
+  \item \(|A| < |B|\), falls \(|A| \leq |B|\) und es existiert keine injektive Abbildung \(f: B \to A\).\\
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+Eine Menge \(A\) ist \textbf{abzählbar}, falls A endlich ist oder \(|A| = |\N|\).
+
+Anders definiert: \(A\) ist abzählbar \(\Leftrightarrow\) es existiert eine injektive Funktion \(f: A \to \N\).
+\end{definition}
+
+Intuitive bedeutet die Abzählbarkeit, dass die Elemente der abzählbaren menge nummeriert werden können. Es führt also eine lineare Ordnung ein.
+
+\begin{lemma}
+Sei \(\Sigma\) ein beliebiges Alphabet. Dann ist \(\Sigma^*\) abzählbar.\\
+\end{lemma}
+
+\begin{satz}
+Die Menge der Touringmaschinenkodierungen \(\operatorname{KodTM}\) ist abzählbar.\\
+\end{satz}
+
+\begin{lemma}
+\( |\Q^+| = |\N| \). Somit ist die Menge der postiven rationalen Zahlen abzählbar. \\
+\end{lemma}
+
+\begin{lemma}
+\( (\N - \{0\}) \times (\N - \{0\}) \) ist abzählbar.\\
+\end{lemma}
+
+\begin{satz}
+\( [0, 1] \subseteq \R \) ist nicht abzählbar.\\
+\end{satz}
+
+\begin{satz}
+\( \mathcal{P}(\Sigma_\text{bool}^*) \) ist nicht abzählbar.\\
+\end{satz}
+
+\begin{corollary}
+\( |\operatorname{KodTM}| < |\mathcal{P}(\Sigma_\text{bool}^*)| \) und somit existieren unendlich viele nicht rekursiv abzählbare Sprachen über \( \Sigma_\text{bool} \).
+\end{corollary}
+
+\subsection{Diagonalsprache}
+Sei \( w_i \) das \(i\)-te Wort in kanonischer Ordnung über \( \Sigma_\text{bool} \). Sei \(M_i\) die \(i\)-te Touringmaschine. Daraus deinieren wir die Matrix \( A = [d_{ij}]_{i,j = 1, \ldots, \infty} \), wobei \( d_{ij} = 1 \Leftrightarrow M_i \text{ akzeptiert } w_j \).
+
+Somit bestimmt die \(i\)-te Zeile der Matrix \(A\) die Sprache \( L(M_i) = \{w_j |\ d_{ij} = 1 \text{ für alle } j \in \N - \{0\}\} \).
+
+Nun lässt sich durch die Idee der Diagonalisierung eine Sprache erzeugen, die keiner der Sprachen \(L(M_i)\) entspricht.
+\begin{align*}
+L_\text{diag} &= \{ w \in \Sigma_\text{bool}^* | w = w_i \text{ für ein } i \in \N - \{0\} \land M_i \text{ akzeptiert } w_i \text{ nicht} \}\\
+&= \{ w \in \Sigma_\text{bool}^* | w = w_i \text{ für ein } i \in \N - \{0\} \land d_{ii} = 0 \}
+\end{align*}
+
+\begin{satz}
+\( L_\text{diag} \notin \mathcal{L}_\text{RE} \)
+\end{satz}
+
+\section{Die Methode der Reduktion}
+\begin{definition}
+Seien \(L_1 \subseteq \Sigma_1^*, L_2 \subseteq \Sigma_2^*\) zwei Sprachen. \textbf{\( L_1 \) ist auf \( L_2 \) rekursiv reduzierbar}, \( L_1 \leq_R L_2 \), falls \[ L_2 \in \mathcal{L}_R \Rightarrow L_1 \in \mathcal{L}_R \]
+\end{definition}
+
+Die Intuition hinter der Bezeichnung \( L_1 \leq_R L_2 \) ist, dass \( L_2 \) bezüglich der algorithmischen Lösbarkeit mindestens so schwer wie \( L_1 \) ist.
+
+Wäre also \( L_2 \) algorithmisch lösbar, sprich es gibt eine TM \(M\) mit \(L(M) = L_2\), dann wäre auch \(L_1\) durch eine TM \(M'\) lösbar. Die TM \(M'\) könnte mit Hilfe von \(M\) konstruiert werden.
+
+\subsection{EE-Reduktion}
+Das Ziel ist es nun für zwei Sprachen zu zeigen, dass \(L_1 \leq_R L_2\) gilt. Dazu sucht man eine TM \(M\), die für jede Eingabe \(x\) und das Entscheidungsproblem \((\Sigma_1, L_1)\) eine Ausgabe \(y\) generiert. Diese Ausgabe wiederum ist die Eingabe für das Entscheidungsproblem \((\Sigma_2, L_2)\).  Dieses Umschreiben soll dabei den Effekt haben, dass die Lösung des Entscheidungsproblems \((\Sigma_2, L_2)\) auf \(y\) gerade der Lösung des Entscheidungsproblems \((\Sigma_1, L_1)\) auf \(x\) entspricht.\\
+
+\begin{definition}
+Seien \(L_1 \subseteq \Sigma_1^*, L_2 \subseteq \Sigma_2^*\) zwei Sprachen. \(L_1\) ist auf \(L_2\) \textbf{EE-reduzierbar}, \(L_1 \leq_{EE} L_2\), wenn eine TM \(M\) existiert, die eine Abbildung \(f_M: \Sigma_1^* \to \Sigma_2^*\) für alle \(x \in \Sigma_1^*\) berechnet mit der Eigenschaft, dass \[x \in L_1 \Leftrightarrow f_M(x) \in L_2.\] In einem solchen Fall spricht man davon, dass die TM \(M\) die Sprache \(L_1\) auf die Sprache \(L_2\) reduziert.\\
+\end{definition}
+
+\begin{lemma}
+Seien \( L_1 \subseteq \Sigma_1^*, L_2 \subseteq \Sigma_2^* \) zwei Sprachen. Falls \( L_1 \leq_{EE} L_2 \), dann auch \( L_1 \leq_R L_2 \).\\
+\end{lemma}
+
+\begin{lemma}
+Sei \( \Sigma \) ein Alphabet. Für jede Sprache \( L \subseteq \Sigma^* \) gilt: \[ L \leq_R L^C \land L^C \leq_R L \]\\
+\end{lemma}
+
+
+\begin{corollary}
+\( L_\text{diag}^C \notin \mathcal{L}_R \)\\
+\end{corollary}
+
+\begin{lemma}
+\( L_\text{diag}^C \in \mathcal{L}_{RE} \)\\
+\end{lemma}
+
+\begin{corollary}
+\( L_\text{diag}^C \in \mathcal{L}_{RE} - \mathcal{L}_R \Rightarrow \mathcal{L}_R \subsetneq \mathcal{L}_{RE} \)
+\end{corollary}
+
+\subsubsection{Rekursiv aufzählbare Sprachen, die nicht rekursiv sind}
+
+\begin{definition}
+Die \textbf{universelle Sprache} ist definiert durch \[ L_U = \{ \operatorname{Kod}(M)\#w \ |\ w \in \Sigma_\text{bool}^*, w \in L(M) \} \]
+\end{definition}
+
+\begin{satz}
+Es existiert die \textbf{universelle} TM \( U \), so dass \( L(U) = L_U \). Daraus folgt, dass \( L_U \in \mathcal{L}_{RE} \).\\
+\end{satz}
+
+\begin{satz}
+\( L_U \notin \mathcal{L}_R \)
+\end{satz}
+
+\begin{proof}
+Es reicht zu zeigen, dass \( L_\text{diag}^C \leq_R L_U \) gilt. Dies sagt aus, dass \( L_U \) mindestens so schwer ist wie \( L_\text{diag} \). Wir wissen bereits, dass \( L_\text{diag}^C \notin \mathcal{L}_R \) und daraus würde automatisch folgen, dass \( L_U \notin \mathcal{L}_R \).
+
+Sei \( A \) ein Algorithmus, der \( L_U \) entscheidet. Damit bauen wir einen Algorithmus \( B \), der \( A \) verwendet, um die Sprache \( L_\text{diag}^C \) zu entscheiden. \( B \) nimmt als Eingabe \( x \in \Sigma_\text{bool}^* \) entgegene. Diese eingabe wird zuerst an das Unterprogramm \( C \) weitergeleitet. \( C \) berechnet an welcher Stelle \( i \) das Wort \( x = w_i \) in kanonischer Reihenfolge steht. Mittels dieser Information erzeugt es zusätzlich \( \operatorname{Kod}(M_i) \), also die \( i \)-te TM. Das Resultat von \( C \) ist somit \(\operatorname{Kod}(M_i)\#w_i\). Diese Ausgabe wird als Eingabe an \( A \) geleitet. Wir wissen, dass \( A \) entscheidet, ob \( M_i \) auf \( w_i \) hält. Nach der Vorgabe hält \( A \) auf der gegebenen Eingabe. Daraus folgt, dass auch \( B \) hält, da sowohl \( C \) als auch \( A \) Algorithmen sind. Weiter ist offensichtlich, dass \( L(B) = L_\text{diag}^C \). Somit ist \( L_U \) mindestens so schwer wie \( L_\text{diag}^C \). Daraus folgt, dass \( L_U \notin \mathcal{L}_R \).
+\end{proof}
+
+\begin{proof}[Beweis mittels EE-Reduktion]
+Es gilt nach unserem bisherigen Wissensstand: \( L_\text{diag}^C \leq_{EE} L_U \Rightarrow L_\text{diag}^C \leq_R L_U \). Somit zeigen wir nun den Beweis mittels EE-Reduktion. Sei \( M \) eine TM, die eine Abbildung \( f_M: \Sigma_\text{bool} \to \{0, 1, \# \}^* \) berechnet, so dass \[ x \in L_\text{diag}^C \Leftrightarrow f_M(x) \in L_U. \]
+M arbeitet nun wie folgt. Für eine Eingabe \( x \) berechnet \( M \) zuerst ein \( i \), so dass \( x = w_i \) (\(x\) ist das \(i\)-te Wort in kanonischer Reihenfolge). Danach berechnet \( M \) die Kodierung \(\operatorname{Kod}(M_i)\) der \(i\)-ten TM. \( M \) hält mit dem Inhalt \(\operatorname{Kod}(M_i) \# w_i\) auf dem Band. Weil \( x = w_i \), ist es nach Definition von \( L_\text{diag}^C \) offensichtlich, dass
+\begin{align*}
+x = w_i \in L_\text{diag}^C &\Leftrightarrow M_i akzeptiert w_i\\
+&\Leftrightarrow w_i \in L(M_i)\\
+&\Leftrightarrow \operatorname{Kod}(M_i) \# w_i \in L_U
+\end{align*}
+
+\end{proof}
+
+\subsubsection{Halteproblem}
+\begin{definition}
+Das \textbf{Halteproblem} ist das Entscheidungsproblem \( (\{0, 1, \#\}^*, L_H) \), wobei
+\[
+L_H = \{ \operatorname{Kod}(M) \# x \ |\ x \in \Sigma_\text{bool}^* \land M \text{ hält auf } x \}
+\]\\
+\end{definition}
+
+\begin{satz}
+\( L_H \notin \mathcal{L}_R \)\\
+\end{satz}
+
+\begin{proof}[Beweis auf der Ebene von Programmen]
+Wir möchten zeigen, dass \( L_U \leq_R L_H \) gilt. Wir zeigen also, dass \( L_H \) mindestens so schwierig ist wie \( L_U \).
+
+Sei \( L_H \in \mathcal{L}_R \). Daher existiert ein Algorithmus \( H \), der \( L_H \) akzeptiert. Wir bauen nun damit den Algorithmus \( U \) wie folgt. Als Eingabe erhalten wir das Wort \( w \). Ein Unterprogramm \( C \) prüft, ob \(w = x \# y \) mit \( x = \operatorname{Kod}(M) \) für eine TM \( M \) ist. Falls nicht, so verwirft \( C \) die Eingabe, was zum Verwerfen der Eingabe in \( U \) folgt.
+
+Falls die Eingabe das gewünschte Format hat, wird diese weiter an unser Unterprogramm \( H \) geleitet. \( H \) prüft nun, ob die TM \(M\) auf der Eingabe \( y \) hält. Falls nicht, so wissen wir, dass \( y \notin L(M) \Rightarrow x \# y \notin L_U \) und verwerfen die Eingabe in \( U \). Hält hingegen \( M \), so wissen wir, dass \( M \) nach \textbf{endlich} vielen Schritten \( y \) akzeptiert hat oder nicht. Somit übergeben wir die Eingabe einem weiteren Unterprogramm \( S \), welches \( M \) auf der Eingabe \( y \) simuliert. Falls \( M \) in  \( q_\text{accept} \) landet, so gilt \( x \# y \in L_U \), sonst nicht.
+
+Es ist offensichtlich, dass \( L(U) = L_U \). Daraus folgt: \( L_U \leq_R L_H \land L(U) \notin \mathcal{L}_R \Rightarrow L_H \notin \mathcal{L}_R \)
+
+\end{proof}
+
+\subsubsection{Leere Sprache}
+\begin{definition}
+\[
+L_\text{empty} = \{ \operatorname{Kod}(M) \ |\ L(M) = \emptyset \}
+\]
+
+Enthält die Kodierung aller TM, die die leere Menge akzeptieren.\\
+\end{definition}
+
+\begin{corollary}
+\[
+L_\text{empty}^C = \{ x \in \Sigma_\text{bool}^* \ |\ (x \notin \operatorname{Kod}(M') \text{ für alle TM } M') \lor (x = \operatorname{Kod}(M) \land L(M) \notin \emptyset) \}
+\]
+\end{corollary}
+
+\begin{lemma}
+\( L_\text{empty}^C \in \mathcal{L}_{RE} \)
+\end{lemma}
+
+\todo[inline]{Seite 182...}
