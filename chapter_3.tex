@@ -187,6 +187,21 @@ Zur Übergangsfunktion $\delta$ wird $\hat\delta: Q \times \Sigma^* \to \mathcal
 
 \end{definition}
 
-Aus der Definition sieht man, dass $\delta(q, w)$ jeweils die Menge aller Zustände aus $Q$ liefert, die aus $q \in Q$ durch das vollständige Lesen von $w$ erreichbar sind. Somit erhalten wir für einen NEA $M$: $L(M) = \{ w \in \Sigma^* |\ \hat\delta(q_0, w) \cap F \not= \emptyset \}$.
+Aus der Definition sieht man, dass $\delta(q, w)$ jeweils die Menge aller Zustände aus $Q$ liefert, die aus $q \in Q$ durch das vollständige Lesen von $w$ erreichbar sind. Somit erhalten wir für einen NEA $M$: $L(M) = \{ w \in \Sigma^* |\ \hat\delta(q_0, w) \cap F \not= \emptyset \}$.\\
 
-\todo[inline]{... Seite 113}
+\begin{satz}
+Zu jedem NEA \( M \) existiert ein EA \( A \), so dass \(L(M) = L(A)\).
+\end{satz}
+
+\begin{proof}
+Sei \( M = (Q, \Sigma, \delta_M, q_0, F) \) ein NEA und \( A = (Q_A, \Sigma_A, \delta_A, q_{0A}, F_A) \) ein EA. \(A\) können wir dabei aus \(M\) wie folgt konstruieren:
+\begin{itemize}
+  \item \(Q_A = \{ \langle P \rangle \ |\ P \subset Q \}\)
+  \item \(\Sigma_A = \Sigma\)
+  \item \(q_{0A} = \langle \{q_0\} \rangle\)
+  \item \(F_A = \{ \langle P \rangle \ |\ P \subseteq Q, P \cap F \not= \emptyset \}\)
+  \item \( \delta_A: Q_A \times \Sigma_A \to Q_A \) und definiert wie folgt: \[ \forall \langle P \rangle \in Q_A, \forall a \in \Sigma_A: \delta_A(\langle P \rangle, a) = \left\langle \bigcup_{p \in P} \delta_M (p, a) \right\rangle
+  \]\\
+\end{itemize}
+
+\end{proof}
