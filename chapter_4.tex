@@ -1,0 +1,178 @@
+\chapter{Turingmaschinen}
+\section{Turingmaschine}
+\begin{definition}
+Eine Turingmaschine (TM) ist ein 7-Tupel \(M = (Q, \Sigma, \Gamma, \delta, q_0, q_\text{accept}, q_\text{reject})\):
+\begin{itemize}
+  \item \(Q\) ist eine endliche Menge von \textbf{Zuständen} und wird als \textbf{Zustandsmenge von \(M\)} bezeichnet.
+  \item \(\Sigma\) ist das \textbf{Eingabealphabet}, wobei die Symbole \(\stopsym,\ \emptysym\) nicht in \(\Sigma\) sind.
+  \item \(\Gamma\) ist das \textbf{Arbeitsaplhabet}, wobei
+    \begin{itemize}
+      \item \(\Sigma \subseteq \Gamma\)
+      \item \(\stopsym, \emptysym \in \Gamma\)
+      \item \(\Gamma \cap Q = \emptyset\)
+    \end{itemize}
+    Somit enthält das Arbeitsalphabet die Symbole, die auf dem Arbeitsband vorkommen dürfen. Dazu gehört die Eingabe, da diese am Anfang auf dem Band steht.
+  \item \( \delta: (Q - \{q_\text{accept}, q_\text{reject}) \times \Gamma \to Q \times \Gamma \times \{L, R, N\}\) ist die \textbf{Übergangsfunktion von \(M\)}. Es gilt jeweils \[ \forall q \in Q:\ \delta(q, \stopsym) \in Q \times \{\stopsym\} \times \{R, N\}\]
+  Diese spezielle Eigenschaft beim Lesen des Symbols \(\stopsym\) verbietet es das Symbol zu ersetzen und den Lesekopf nach Links zu bewegen. Dies macht Sinn, da wir bereits am linken Rand angelangt sind und das Band dort erst beginnt.\\ Das Resultat \(\delta(p, Y) = (q, X, Z) \in Q \times \Gamma \times \{L, R, N\}\) sagt aus, dass beim Lesen des Symbols \(Y\) im Zustand \(p\) wird folgendes passieren: Das gelesene Symbol \(Y\) wird durch \(X\) ersetzt und der Lesekopf in Richtung \(Z\) bewegt. Der neue Zustand ist \(q\).
+  \item \(q_0 \in Q\) ist der \textbf{Anfangszustand}
+  \item \(q_\text{accept} \in Q\) ist der \textbf{akzeptierende Zustand}. Im Unterschied zu einem EA, hat eine TM genau einen akzeptierenden Zustand. Ist dieser Erreicht, werden keine Aktionen mehr ausgeführt auf der TM.
+  \item \(q_\text{reject} \in Q - \{q_\text{accept}\}\) ist der \textbf{verwerfende Zustand}. Wenn die TM diesen Zustand erreicht, so verwirft die TM die Eingabe. Daraus folgt, dass die TM nicht die gesamte Eingabe lesen muss, um zu akzeptieren/zu verwerfen.\\
+\end{itemize}
+
+\end{definition}
+
+\begin{definition}
+Eine \textbf{Konfiguration} \(C\) einer TM \(M\) ist ein Element aus
+\[
+\operatorname{Konf}(M) = \{\stopsym\} \cdot \Gamma^* \cdot Q \cdot \Gamma^+ \cup Q \cdot \{\stopsym\} \cdot \Gamma^+
+\]
+
+Eine Konfiguration \(w_1qaw_2\emptysym\emptysym\ldots\) mit \(w_1 \in \{\stopsym\}\Gamma^*, w_2 \in \Gamma^*, a \in \Gamma, q \in Q\) beschreibt die folgende Situation:
+\begin{itemize}
+  \item Die TM \(M\) befindet sich im Zustand \(q\).
+  \item Der Inhalt des Bandes entspricht \(w_1aw_2\emptysym\emptysym\ldots\)
+  \item Der Kopf ist gerade beim \(|w_1| + 1\)-ten Symbol auf dem Band. Liest/Schreibt gerade \(a\).
+\end{itemize}
+
+Eine Konfiguration der Form \(p\stopsym w \emptysym\emptysym\ldots\) sagt aus, dass wir im Zustand \(p\) sind und das auf dem Band \(\stopsym w \emptysym\emptysym\ldots\) steht.\\
+
+\end{definition}
+
+\begin{definition}
+Die \textbf{Startkonfiguration} für ein Eingabewort \(x \in \Sigma^*\) ist: \(q_0 \stopsym x\).\\
+\end{definition}
+
+\begin{definition}
+Ein \textbf{Schritt} ist eine Relation \(\vdash_M \subseteq \operatorname{Konf}(M) \times \operatorname{Konf}(M)\). Wobei das erste Element des Tupels eine Konfiguration ist und das zweite Element wieder eine Konfiguration. Vergleicht man beide Konfigurationen, so ist ersichtlich, was die Übergangsfunktion war.\\
+\end{definition}
+
+\begin{definition}
+Eine \textbf{Berechnung} ist eine potentiell unendliche Folge von Konfigurationen: \(C_0, C_1, C_2, \ldots\), so dass \(C_i \vdash_M C_{i+1} \ i = 0, 1, 2, \ldots\). Wenn \( C_0 \vdash_M C_1 \vdash_M \cdots \vdash_M C_i \) für ein \(i \in \N\), dann \(C_0 \vdash_M^* C_i\).\\
+\end{definition}
+
+\begin{definition}
+Eine \textbf{Berechnung} von \(M\) auf \(x\) beginnt mit einer Startkonfiguration \(C_0 = q_0 \stopsym x\) und läuft entweder unendlich lange, oder endet in einer Konfiguration \(C_i = w_1 q w_2 \) wobei \(q \in \{q_\text{accept}, q_\text{reject}\}\).\\
+\end{definition}
+
+\begin{definition}
+\begin{itemize}
+  \item Die Berechnung von \(M\) auf \(x\) heisst \textbf{akzeptierend}, falls sie in einer Konfiguration \(C = w_1 q_\text{accept} w_2\) endet.
+  \item Die Berechnung ist \textbf{verwerfend}, wenn sie in einer Konfiguration \(C = w_1 q_\text{reject} w_2\).
+  \item Eine \textbf{nicht-akzeptierende} Berechnung ist gegeben, wenn sie verworfen wird oder die Berechnung unendlich ist.\\
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+Die von einer Turingmaschine \(M\) akzeptierte Sprache ist
+\[
+L(M) = \{w \in \Sigma^* \ |\ q_0 \stopsym w \vdash_M^* y q_\text{accept} z \land y,z \in \Gamma^* \}
+\]\\
+\end{definition}
+
+\begin{definition}
+\(M\) \textbf{berechnet} eine Funktion \(F: \Sigma^* \to \Gamma^*\), falls
+\[
+\forall x\in \Sigma^*: q_0 \stopsym x \vdash_M^* q_\text{accept} \stopsym F(x)
+\]\\
+\end{definition}
+
+\begin{definition}
+Eine Sprache \(L\) heisst \textbf{rekursiv aufzählbar}, falls eine TM \(M\) existiert, so dass \(L = L(M)\).
+
+Die Menge aller rekursiv aufzählbaren Sprachen entspricht somit:
+\[
+\mathcal{L}_{RE} = \{L(M) \ |\ M \text{ ist eine TM}\}
+\]
+\end{definition}
+
+\begin{definition}
+Eine Sprache \(L \subseteq \Sigma^*\) heisst \textbf{rekursiv (entscheidbar)}, falls \(L = L(M)\) für eine TM \(M\), wobei für alle \(x \in \Sigma^*\) gilt:
+\begin{itemize}
+  \item \(q_0 \stopsym x \vdash_M^* y q_\text{accept} z,\ y,z \in \Gamma^*\), falls \(x \in L\)
+  \item \(q_0 \stopsym x \vdash_M^* y q_\text{reject} z,\ y,z \in \Gamma^*\), falls \(x \notin L\)
+\end{itemize}
+
+Wenn eine TM also immer im akzeptierenden oder verwerfenden Zustand landet, also nie unendlich lange läuft für eine beliebige Eingabe, so sagt man, dass die \textbf{TM immer hält}.
+
+\end{definition}
+
+\begin{definition}
+Eine TM, die immer hält, ist ein formales Modell des Begriffs Algorithmus.\\
+\end{definition}
+
+
+\begin{definition}
+Die Menge der \textbf{rekursiven (algorithmisch erkennbaren) Sprachen} ist:
+\[
+\mathcal{L}_R = \{L(M) \ |\ M \text{ ist eine TM, die immer hält}\}
+\]
+\end{definition}
+
+\section{Mehrband-Turingmaschinen}
+Für eine positive ganze Zahl \(k\) hat eine \(k\)-Band-Turingmaschine die folgenden Komponenten
+\begin{itemize}
+  \item eine endliche Kontrolle (das Programm)
+  \item ein endliches Band mit einem \textit{Lese}kopf
+  \item \(k\) Arbeitsbänder, jedes mit einem Lese/Schreibkopf
+\end{itemize}
+
+dabei haben wir folgende Eigenschaften am Anfang:
+\begin{itemize}
+  \item Auf dem Eingabeband befindet sich \(\stopsym w \$\). \(\stopsym\) markiert den Anfang des Bandes (ganz Links) und \(\$\) das Ende des Bandes (ganz Rechts).
+  \item Der Lesekopf des Eingabebandes beginnt bei \(\stopsym\).
+  \item Der Inhalt der \(k\) Arbeitsbänder ist \(\stopsym \emptysym \emptysym \ldots\) und der Lese/Schreibkopf beginnt bei \(\stopsym\).
+  \item Die endliche Kontrolle befindet sich im Anfangszustand \(q_0\).
+\end{itemize}
+
+Alle \(k + 1\) Köpfe dürfen sich nach Links und Rechts bewegen. Falls sie auf ein \(\stopsym\) stossen, so dürfen sie nicht mehr weiter nach Links lesen. Beim Antreffen von \(\$\) auf dem Eingabeband, darf der Lesekopf nicht weiter nach Rechts. Der Lesekopf auf dem Eingabeband darf nicht schreiben. Somit bleibt der Inhalt des Eingabebandes während der gesamten Berechnung unverändert.
+
+Die Felder der Bänder können von links nach rechts nummeriert werden. Dabei ist jeweils \(\stopsym\) das 0-te Symbol des Bandes.
+
+Eine Konfiguration einer \(k\)-Band-Turingmaschine \(M\) kann durch ein Tupel der Form
+\[
+(q, w, i, u_1, i_2, u_2, i_2, \ldots, u_k, i_k) \in Q \times \Sigma^* \times \N \times (\Gamma \times \N)^k
+\]
+was folgende Bedeutung hat:
+\begin{itemize}
+  \item \(M\) befindet sich im Zustand \(q\)
+  \item der Inhalt des Eingabebandes ist \(\stopsym w \$ \) und der Lesekopf des Eingabebandes zeigt auf das \(i\)-te Feld des Eingabebandes
+  \item für \(j \in \{1, 2, \ldots, k\}\) ist der Inhalt des \(j\)-ten Bandes \(\stopsym u_j \emptysym \emptysym \ldots\) und \(i_j \leq |u_j|\) ist die Position des \(j\)-ten Lese/Schreibkopfs.\\
+\end{itemize}
+
+\begin{definition}
+Eine Maschine \(A\) ist äquivalent zu einer Maschine \(B\), falls für jede Eingabe \(x \in \Sigma_\text{bool}^*\):
+\begin{itemize}
+  \item \(A\) akzeptiert \(x\) \(\Leftrightarrow\) \(B\) akzeptiert \(x\)
+  \item \(A\) verwirft \(x\) \(\Leftrightarrow\) \(B\) verwirft \(x\)
+  \item \(A\) arbeitet unendlich lange auf \(x\) \(\Leftrightarrow\) \(B\) arbeitet unendlich lange auf \(x\)\\
+\end{itemize}
+
+\end{definition}
+
+\begin{lemma}
+Für jede Mehrband-TM (MTM) existiert eine äquivalente TM.
+\end{lemma}
+
+\section{Nichtdeterministische Turingmaschinen}
+\todo[inline]{... nicht wirklich relevant derzeit ...}
+
+\section{Kodierung von Turingmaschinen}
+\begin{definition}
+\(\operatorname{Kod}(M)\) kodiert eine Turingmaschine \(M\) über \(\Sigma_\text{bool}\).\\
+\end{definition}
+
+\begin{definition}
+Die Menge aller Kodierungen aller Turingmaschinen ist
+\[
+\operatorname{KodTM} = \{ \operatorname{Kod}(M) \ |\ M \text{ ist eine TM} \}
+\]
+\end{definition}
+
+\begin{definition}
+Sei \( x \in \Sigma_\text{bool}^* \). Für jedes \(i \in \N - \{0\}\) kodiert \(x\) die \(i\)-te TM, falls
+\begin{itemize}
+  \item \( x = \operatorname{Kod}(M) \) für eine TM \(M\), und
+  \item die Menge \( \{ y \in \Sigma_\text{bool}^* \ |\ y \text{ ist vor } x \text{ in kanonischer Ordnung} \} \) enthält genau \(i - 1\) Wörter, die Kodierungen von Turingmaschinen sind.
+\end{itemize}
+
+\end{definition}
