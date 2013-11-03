@@ -51,7 +51,7 @@ Sei $m$ eine natürliche Zahl. Dann erzeugt die Funktion $\operatorname{Bin}(m) 
 
 Die Umkehrfunktion ist $\text{Nummer}(x) = \sum_{i = 1}^n x_i \cdot 2^{n-i}$ und erzeugt für eine binäre Darstellung $x$ die natürliche Zahl.
 
-\ subsubsection{Graphen}
+\subsubsection{Graphen}
 Gerichtete Graphen $G = (V, E)$ ($V$ ist die Knotenmenge, $E$ die Kantenmenge) können durch eine Adjazenzmatrix $M_G$ beschrieben werden: $M_G = [a_{ij}]$. Falls der Knoten $v_i \in V$ mit dem Knoten $v_j \in V$ verbunden ist, so gilt für $M_G$: $a_{ij} = 1$, sonst $a_{ij} = 0$. Die Adjazenzmatrix kann nun durch ein Wort über dem Alphabet $\Sigma = \{0, 1, \#\}$ beschrieben werden. Dazu schreibt man den Inhalt jeder Zeile nacheinander und trennt die Zeilen im entstehenden Wort durch $\#$.
 
 Möchte man einen gewichteten Graphen $G = (V, E, h)$ mit einer Funktion $h(e) \in \N - \{0\}$ für eine Kante $e \in E$, so kann dies ebenfalls über dem Alphabet $\Sigma = \{0, 1, \#\}$ gemacht werden. Wieder schreibt man den Inhalt jeder Zeile der Adjazenzmatrix nacheinander. Dabei kodiert man die Gewichtung mittels $\operatorname{Bin}(h(e))$, trennt die einzelnen Matrixeinträge durch $\#$ ab und Zeilen durch $\#\#$.
