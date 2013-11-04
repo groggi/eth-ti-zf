@@ -15,14 +15,14 @@ Eine Menge \(A\) ist \textbf{abzählbar}, falls A endlich ist oder \(|A| = |\N|\
 Anders definiert: \(A\) ist abzählbar \(\Leftrightarrow\) es existiert eine injektive Funktion \(f: A \to \N\).
 \end{definition}
 
-Intuitive bedeutet die Abzählbarkeit, dass die Elemente der abzählbaren menge nummeriert werden können. Es führt also eine lineare Ordnung ein.
+Intuitive bedeutet die Abzählbarkeit, dass die Elemente der abzählbaren Menge nummeriert werden können. Sie führt also eine lineare Ordnung ein.
 
 \begin{lemma}
 Sei \(\Sigma\) ein beliebiges Alphabet. Dann ist \(\Sigma^*\) abzählbar.\\
 \end{lemma}
 
 \begin{satz}
-Die Menge der Touringmaschinenkodierungen \(\operatorname{KodTM}\) ist abzählbar.\\
+Die Menge der Turingmaschinenkodierungen \(\operatorname{KodTM}\) ist abzählbar.\\
 \end{satz}
 
 \begin{lemma}
@@ -46,7 +46,7 @@ Die Menge der Touringmaschinenkodierungen \(\operatorname{KodTM}\) ist abzählba
 \end{corollary}
 
 \subsection{Diagonalsprache}
-Sei \( w_i \) das \(i\)-te Wort in kanonischer Ordnung über \( \Sigma_\text{bool} \). Sei \(M_i\) die \(i\)-te Touringmaschine. Daraus deinieren wir die Matrix \( A = [d_{ij}]_{i,j = 1, \ldots, \infty} \), wobei \( d_{ij} = 1 \Leftrightarrow M_i \text{ akzeptiert } w_j \).
+Sei \( w_i \) das \(i\)-te Wort in kanonischer Ordnung über \( \Sigma_\text{bool} \). Sei \(M_i\) die \(i\)-te Touringmaschine. Daraus definieren wir die Matrix \( A = [d_{ij}]_{i,j = 1, \ldots, \infty} \), wobei \( d_{ij} = 1 \Leftrightarrow M_i \text{ akzeptiert } w_j \).
 
 Somit bestimmt die \(i\)-te Zeile der Matrix \(A\) die Sprache \( L(M_i) = \{w_j |\ d_{ij} = 1 \text{ für alle } j \in \N - \{0\}\} \).
 
@@ -112,16 +112,16 @@ Es existiert die \textbf{universelle} TM \( U \), so dass \( L(U) = L_U \). Dara
 \end{satz}
 
 \begin{proof}
-Es reicht zu zeigen, dass \( L_\text{diag}^C \leq_R L_U \) gilt. Dies sagt aus, dass \( L_U \) mindestens so schwer ist wie \( L_\text{diag} \). Wir wissen bereits, dass \( L_\text{diag}^C \notin \mathcal{L}_R \) und daraus würde automatisch folgen, dass \( L_U \notin \mathcal{L}_R \).
+Es reicht zu zeigen, dass \( L_\text{diag}^C \leq_R L_U \) gilt. Dies sagt aus, dass \( L_U \) mindestens so schwer ist wie \( L_\text{diag}^C \). Wir wissen bereits, dass \( L_\text{diag}^C \notin \mathcal{L}_R \) und daraus würde automatisch folgen, dass \( L_U \notin \mathcal{L}_R \).
 
-Sei \( A \) ein Algorithmus, der \( L_U \) entscheidet. Damit bauen wir einen Algorithmus \( B \), der \( A \) verwendet, um die Sprache \( L_\text{diag}^C \) zu entscheiden. \( B \) nimmt als Eingabe \( x \in \Sigma_\text{bool}^* \) entgegene. Diese eingabe wird zuerst an das Unterprogramm \( C \) weitergeleitet. \( C \) berechnet an welcher Stelle \( i \) das Wort \( x = w_i \) in kanonischer Reihenfolge steht. Mittels dieser Information erzeugt es zusätzlich \( \operatorname{Kod}(M_i) \), also die \( i \)-te TM. Das Resultat von \( C \) ist somit \(\operatorname{Kod}(M_i)\#w_i\). Diese Ausgabe wird als Eingabe an \( A \) geleitet. Wir wissen, dass \( A \) entscheidet, ob \( M_i \) auf \( w_i \) hält. Nach der Vorgabe hält \( A \) auf der gegebenen Eingabe. Daraus folgt, dass auch \( B \) hält, da sowohl \( C \) als auch \( A \) Algorithmen sind. Weiter ist offensichtlich, dass \( L(B) = L_\text{diag}^C \). Somit ist \( L_U \) mindestens so schwer wie \( L_\text{diag}^C \). Daraus folgt, dass \( L_U \notin \mathcal{L}_R \).
+Sei \( A \) ein Algorithmus, der \( L_U \) entscheidet. Damit bauen wir einen Algorithmus \( B \), der \( A \) verwendet, um die Sprache \( L_\text{diag}^C \) zu entscheiden. \( B \) nimmt als Eingabe \( x \in \Sigma_\text{bool}^* \) entgegen. Diese Eingabe wird zuerst an das Unterprogramm \( C \) weitergeleitet. \( C \) berechnet an welcher Stelle \( i \) das Wort \( x = w_i \) in kanonischer Reihenfolge steht. Mittels dieser Information erzeugt es zusätzlich \( \operatorname{Kod}(M_i) \), also die \( i \)-te TM. Das Resultat von \( C \) ist somit \(\operatorname{Kod}(M_i)\#w_i\). Diese Ausgabe wird als Eingabe an \( A \) geleitet. Wir wissen, dass \( A \) entscheidet, ob \( M_i \) auf \( w_i \) hält. Nach der Vorgabe hält \( A \) auf der gegebenen Eingabe. Daraus folgt, dass auch \( B \) hält, da sowohl \( C \) als auch \( A \) Algorithmen sind. Weiter ist offensichtlich, dass \( L(B) = L_\text{diag}^C \). Somit ist \( L_U \) mindestens so schwer wie \( L_\text{diag}^C \). Daraus folgt, dass \( L_U \notin \mathcal{L}_R \).
 \end{proof}
 
 \begin{proof}[Beweis mittels EE-Reduktion]
 Es gilt nach unserem bisherigen Wissensstand: \( L_\text{diag}^C \leq_{EE} L_U \Rightarrow L_\text{diag}^C \leq_R L_U \). Somit zeigen wir nun den Beweis mittels EE-Reduktion. Sei \( M \) eine TM, die eine Abbildung \( f_M: \Sigma_\text{bool} \to \{0, 1, \# \}^* \) berechnet, so dass \[ x \in L_\text{diag}^C \Leftrightarrow f_M(x) \in L_U. \]
 M arbeitet nun wie folgt. Für eine Eingabe \( x \) berechnet \( M \) zuerst ein \( i \), so dass \( x = w_i \) (\(x\) ist das \(i\)-te Wort in kanonischer Reihenfolge). Danach berechnet \( M \) die Kodierung \(\operatorname{Kod}(M_i)\) der \(i\)-ten TM. \( M \) hält mit dem Inhalt \(\operatorname{Kod}(M_i) \# w_i\) auf dem Band. Weil \( x = w_i \), ist es nach Definition von \( L_\text{diag}^C \) offensichtlich, dass
 \begin{align*}
-x = w_i \in L_\text{diag}^C &\Leftrightarrow M_i akzeptiert w_i\\
+x = w_i \in L_\text{diag}^C &\Leftrightarrow M_i \text{ akzeptiert } w_i\\
 &\Leftrightarrow w_i \in L(M_i)\\
 &\Leftrightarrow \operatorname{Kod}(M_i) \# w_i \in L_U
 \end{align*}
@@ -130,7 +130,8 @@ x = w_i \in L_\text{diag}^C &\Leftrightarrow M_i akzeptiert w_i\\
 
 \subsubsection{Halteproblem}
 \begin{definition}
-Das \textbf{Halteproblem} ist das Entscheidungsproblem \( (\{0, 1, \#\}^*, L_H) \), wobei
+Das \textbf{Halteproblem} ist das Entscheidungsproblem \\
+\( (\{0, 1, \#\}^*, L_H) \), wobei
 \[
 L_H = \{ \operatorname{Kod}(M) \# x \ |\ x \in \Sigma_\text{bool}^* \land M \text{ hält auf } x \}
 \]\\
