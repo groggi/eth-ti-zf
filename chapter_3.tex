@@ -21,7 +21,7 @@ Ein (deterministischer) \textbf{endlicher Automat (EA)} ist ein Quintupel $M = (
 \end{definition}
 
 \begin{definition}
-Eine \textbf{Konfiguration} von $M$ ist ein Element aus $Q \times \Sigma^*$. Falls $M$ in der Konfiguration $(q_i, w) \in Q \times \Sigma^*$ ist, so bedeutet es, dass $M$ aktuell im Zustand $q_i \in Q$ ist und noch den Suffix $w \in Sigma^*$ des Eingabeworts zu lesen hat.
+Eine \textbf{Konfiguration} von $M$ ist ein Element aus $Q \times \Sigma^*$. Falls $M$ in der Konfiguration $(q_i, w) \in Q \times \Sigma^*$ ist, so bedeutet es, dass $M$ aktuell im Zustand $q_i \in Q$ ist und noch den Suffix $w \in \Sigma^*$ des Eingabeworts zu lesen hat.
 
 Die Konfiguration $(q_0, x) \in \{q_0\} \times \Sigma^*$ nennt man eine \textbf{Startkonfiguration} von $M$ auf $x$. Die Berechnung des Worts $x$ beginnt somit an der Startkonfiguration $q_0$.\\
 \end{definition}
@@ -51,9 +51,9 @@ Falls $C_n \in (Q - F) \times \{ \lambda \}$, so ist $C$ eine \textbf{verwerfend
 
 \begin{definition}
 Die von $M$ akzeptierte Sprache $L(M)$ ist definiert als
-\[
-L(M) := \{ w \in \Sigma^* | \text{ die Berechnung von $M$ auf $w$ endet in einer Endkonfiguration $(q, \lambda)$ mit $q \in F$} \}
-\]
+\begin{align*}
+L(M) := \{ w \in \Sigma^* | \text{ die Berechnung von $M$ auf $w$ endet in einer}\\ \text{Endkonfiguration $(q, \lambda)$ mit $q \in F$} \}
+\end{align*}
 \end{definition}
 
 \begin{definition}
@@ -128,7 +128,7 @@ Dieses Lemma kann dazu eingesetzt werden zu zeigen, dass eine Sprache nicht regu
 \subsubsection{Beispiel}
 Es sei zu zeigen, dass $L = \{0^n1^n | n \in \N\}$ nicht regulär ist.
 \begin{proof}
-Wir führen den Beweis indirekt mittels dem Lemma 3.3. Sei $L \in \mathcal{L}(EA)$. Somit existiert ein EA $A = (\Q, \Sigma, \delta, q_0, F)$ mit $L(A) = L$.
+Wir führen den Beweis indirekt mittels dem Lemma 3.3. Sei $L \in \mathcal{L}(EA)$. Somit existiert ein EA $A = (Q, \Sigma, \delta, q_0, F)$ mit $L(A) = L$.
 
 Wir betrachten die Wörter $0^1, 0^2, \ldots, 0^{|Q|+1}$. Wir haben somit $|Q| + 1$ Wörter. Somit existieren $i, j \in \{1, 2, \ldots |Q| + 1\}, i < j$, so dass $\hat\delta(q_0, 0^i) = \hat\delta(q_0, 0^j)$. Nach Lemma 3.3 hat nun zu gelten: $\forall z \in \Sigma^*: 0^i z \in L \Leftrightarrow 0^j z \in L$. Dem ist aber nicht so. Für $z = 1^i$ erhalten wir: $0^i 1^i \in L$, aber auch $0^j 1^i \not\in L$ ($i < j$).
 
@@ -139,9 +139,9 @@ Somit ist $L \not\in \mathcal{L}(EA)$.
 \begin{lemma}[Pumping-Lemma für reguläre Sprachen]
 Sei $L$ regulär. Dann existiert die Konstante $n_0 \in \N$, so dass jedes Wort $w \in \Sigma^*$ mit $|w| \geq n_0$ zerlegt werden kann in $w = y x z$, mit
 \begin{itemize}
-  \item $|yz| \leq n_0$,
+  \item $|yx| \leq n_0$,
   \item $|x| \geq 1$ und
-  \item entweder $\{xy^kz | k \in \N\} \subseteq L$ oder $\{xy^kz | k \in \N \} \cap L = \emptyset\}$.
+  \item entweder $\{xy^kz | k \in \N\} \subseteq L$ oder $\{xy^kz | k \in \N \} \cap L = \emptyset$.
 \end{itemize}
 
 \end{lemma}
@@ -152,7 +152,7 @@ Es sei zu zeigen, dass $L = \{0^n 1^n | n \in \N\}$ nicht regulär ist.
 \begin{proof}
 Wir führen den Beweis indirekt mittels des Pumping-Lemmas. Sei $L \in \mathcal{L}(EA)$. Dann existiert eine Konstante $n_0$ mit den im Pumping-Lemma beschriebenen Eigenschaften. Wir betrachten das Wort $w = 0^{n_0} 1^{n_0}$. Es gilt offensichtlich, dass $|w| \geq n_0$. Somit kann $w$ zerlegt werden in $w = y x z$.
 
-Bedingt durch die Eigenschaft $|yz| \leq n_0$ gilt hier, dass $y = 0^l$ und $z = 0^m$ für $l, m \in \N$. Bedingt durch die zweite Eigenschaft $|x| \geq 1$ ist $m \not= 0$. Nun prüfen wir ob mit diesen Eigenschaften, auch die dritte Pumping-Lemma Eigenschaft gilt. Wir erhalten also $\{ y x^k z | z \in \N\} = \{ 0^{n_0 - l} (0^m)^k 1^{n_0} | k \in \N \} = \{ 0^{n_0 - m + km} 1^{n_0} | k \in \N \}$. Wählen wir $k = 0$, so erhalten wir das Wort $0^{n_0 - m} 1^{n_0}$, was nicht in $L$ liegt, da $m \not= 0$. Für $k = 1$ hingegen liegt das Wort in $L$. Dies ist ein Wiederspruch. Somit ist $L$ nicht regulär.
+Bedingt durch die Eigenschaft $|yx| \leq n_0$ gilt hier, dass $y = 0^l$ und $x = 0^m$ für $l, m \in \N$. Bedingt durch die zweite Eigenschaft $|x| \geq 1$ ist $m \not= 0$. Nun prüfen wir ob mit diesen Eigenschaften, auch die dritte Pumping-Lemma Eigenschaft gilt. Wir erhalten also $\{ y x^k z | z \in \N\} = \{ 0^{n_0 - l} (0^m)^k 1^{n_0} | k \in \N \} = \{ 0^{n_0 - m + km} 1^{n_0} | k \in \N \}$. Wählen wir $k = 0$, so erhalten wir das Wort $0^{n_0 - m} 1^{n_0}$, was nicht in $L$ liegt, da $m \not= 0$. Für $k = 1$ hingegen liegt das Wort in $L$. Dies ist ein Wiederspruch. Somit ist $L$ nicht regulär.
 \end{proof}
 
 \subsection{Kolmogorov-Komplexität}

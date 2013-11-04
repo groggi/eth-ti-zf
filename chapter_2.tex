@@ -78,7 +78,7 @@ K(u, K(v, w)) = u \cdot (v \cdot w) = u \cdot (vw) = uvw = (u \cdot v) \cdot w =
 \begin{remark}
 Für jedes $w \in \Sigma^*$ gilt
 \[
-w \cdot \lambda = \lambda \cdot w = x
+w \cdot \lambda = \lambda \cdot w = w
 \]\\
 \end{remark}
 
@@ -114,7 +114,7 @@ Seien $u, w \in \Sigma^*$ für ein Alphabet $\Sigma$.
 
 \subsection{Ordnung}
 \begin{definition}
-Sei $\Sigma = \{s_1, s_2, \ldots, s_m\}$ ein Alphabet für ein beliebiges $m \geq 1$. Weiter sei $s_1 < s_2 < s_3 < \ldots < s_m$ eine Ordnung auf $\Sigma$. Darauf basierend wir die \textbf{kanonische Ordnung} auf $\Sigma^*$ für $u, v \in \Sigma^*$ wie folgt definiert:
+Sei $\Sigma = \{s_1, s_2, \ldots, s_m\}$ ein Alphabet für ein beliebiges $m \geq 1$. Weiter sei $s_1 < s_2 < s_3 < \ldots < s_m$ eine Ordnung auf $\Sigma$. Darauf basierend wird die \textbf{kanonische Ordnung} auf $\Sigma^*$ für $u, v \in \Sigma^*$ wie folgt definiert:
 \begin{align*}
 u < v \Leftrightarrow \quad & |u| < |v|\\
 &\lor (|u| = |v| \land u = x \cdot s_i \cdot u' \land v = x \cdot s_j \cdot v'\\
@@ -255,7 +255,6 @@ Ein Algorithmus $A$ \textbf{löst} $\mathcal{U}$, falls für jedes $x \in L$:
   \item $A(x) \in \mathcal{M}(x)$ ($A(x)$ ist eine zulässige Lösung des Problemfalls $x$ von $\mathcal{U}$)
   \item $\operatorname{cost}(A(x), x) = \operatorname{goal}\{\operatorname{cost}(\beta, x) | \beta \in \mathcal{M}(x)\}$
 \end{enumerate}
-
 \end{definition}
 
 \begin{remark}
@@ -409,7 +408,7 @@ Die Kolmogorov-Komplexität einer natürlichen Zahl $n$ ist $K(n) = K(\operatorn
 \end{definition}
 
 \begin{lemma}
-Für jede Zahl $n \in \N - \{0\}$ existiert ein Wort $w_n \in (\Sigma_\text{bool}^n$, so dass $K(w_n) \geq |w_n| = n$, es existiert somit für jede Zahl $n$ ein nichtkomprimierbares Wort der Länge $n$.\\
+Für jede Zahl $n \in \N - \{0\}$ existiert ein Wort $w_n \in \Sigma_\text{bool}^n$, so dass $K(w_n) \geq |w_n| = n$, es existiert somit für jede Zahl $n$ ein nichtkomprimierbares Wort der Länge $n$.\\
 \end{lemma}
 
 \begin{satz}
