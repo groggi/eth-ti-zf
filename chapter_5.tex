@@ -167,7 +167,39 @@ L_\text{empty}^C = \{ x \in \Sigma_\text{bool}^* \ |\ (x \notin \operatorname{Ko
 \end{corollary}
 
 \begin{lemma}
-\( L_\text{empty}^C \in \mathcal{L}_{RE} \)
+\( L_\text{empty}^C \in \mathcal{L}_{RE} \)\\
 \end{lemma}
 
-\todo[inline]{Seite 182...}
+\begin{lemma}
+\( L_\text{empty}^C \notin \mathcal{L}_R \)\\
+\end{lemma}
+
+\begin{corollary}
+\( L_\text{empty} \notin \mathcal{L}_R \) \\
+\end{corollary}
+
+\begin{corollary}
+Die Sprache \( L_{EQ} = \{\operatorname{Kod}(M)\#\operatorname{Kod}(M') \ |\ L(M) = L(M')\} \) ist nicht entscheidbar (\( L_{EQ} \notin \mathcal{L}_R\)).\\
+\end{corollary}
+
+\subsection{Satz von Rice}
+\begin{definition}
+Eine Sprache \( L \subseteq \{\operatorname{Kod}(M) \ |\ M \text{ eine TM}\} \) heisst \textbf{semantisch nichttriviales Entscheidungsproblem über Turingmaschinen}, falls die folgenden Bedingungen erfüllt sind:
+\begin{itemize}
+  \item Es gibt eine TM \( M_1 \), so dass \( \operatorname{Kod}(M_1) \in L \). Es gilt somit \(L \not= \emptyset\)
+  \item Es gibt eine TM \( M_2 \), so dass \( \operatorname{Kod}(M_2) \notin L \). \(L\) enthält also nicht die Kodierung aller Turingmaschinen
+  \item Für zwei TM \(A, B\) gilt: \( L(A) = L(B) \Rightarrow (\operatorname{Kod}(A) \in L \Leftrightarrow \operatorname{Kod}(B) \in L) \)\\
+\end{itemize}
+
+\end{definition}
+
+\begin{lemma}
+\( L_{H,\lambda} = \{ \operatorname{Kod}(M) \ |\ M \text{ hält auf } \lambda \} \). \(L_{H,\lambda}\) ist ein Spezialfall des Halteproblems, womit wir \(L_{H,\lambda} \notin \mathcal{L}_R\) erhalten.
+\end{lemma}
+
+\todo[inline]{Satz von Rice relevant?}
+
+\todo[inline]{Das Post'sche Korrespondenzproblem ausgelassen}
+
+\todo[inline]{Kapitel 5.6, Seite 199, ausgelassen}
+
