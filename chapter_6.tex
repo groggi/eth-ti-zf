@@ -1,1 +1,140 @@
 \chapter{Komplexitätstheorie}
+In der Komplexitätstheorie wird primär mit Mehrband-Turingmaschinen gearbeitet.
+
+\section{Komplexitätsmasse}
+
+\begin{definition}
+Sei \(M\) eine MTM, die immer hält. Sei weiter \(\Sigma\) das Eingabealphabet von \(M\). Sei \(D = C_1, C_2, \ldots, C_l\) die Berechnung von \(M\) auf einem \(x \in \Sigma^*\). Dann ist die \textbf{Zeitkomplexität} \(\Time_M(x)\) definiert durch
+\[
+\Time_M(x) = k - 1.
+\]
+
+Also der Anzahl Berechnungsschritte, die \(M\) auf \(x\) durchläuft (\(|D|\)).\\
+\end{definition}
+
+\begin{definition}
+Die \textbf{Zeitkomplexität von \(M\)} ist die Funktion \(\Time_M: \N \to \N\) definiert durch
+\[
+\Time_M(n) = \max\{\Time_M(x) \ |\ x \in \Sigma^n\},\quad n \in \N.
+\]\\
+\end{definition}
+
+\begin{definition}
+Sei \(k \in \N - \{0\}\) und \(M\) eine \(k\)-Band-Turingmaschine, die immer hält. Dann ist
+\[
+C = (q, x, i, \alpha_1, i_1, \alpha_2, i_2, \ldots, \alpha_k, i_k)
+\]
+eine Konfiguration von \(M\). Die \textbf{Speicherplatzkomplexität einer Konfiguration \(C\)} ist dann
+\[
+\Space_M(C) = \max \{|\alpha_i| \ |\ i = 1, \ldots, k\}.
+\]
+Somit ist die Speicherplatzkomplexität einer Konfiguration gleich der längsten Beschriftung eines Arbeitsbandes.\\
+\end{definition}
+
+\begin{definition}
+Die \textbf{Speicherplatzkomplexität von \(M\)} ist eine Funktion \(\Space_M: \N \to \N\) definiert durch
+\[
+\Space_M(n) = \max \{\Space_M(x) \ |\ x \in \Sigma^n\}
+\]\\
+\end{definition}
+
+\begin{lemma}
+Sei \(k \in \N - \{0\}\) und \(A\) eine \(k\)-Band-TM, die immer hält. Dann existiert eine äquivalente 1-Band-TM \(B\), so dass
+\[
+\Space_B(n) \leq \Space_A(n)
+\]\\
+\end{lemma}
+
+\begin{lemma}
+Sei \(k \in \N - \{0\}\) und \(A\) eine \(k\)-Band-Turingmaschine. Für jede solche MTM existiert eine \(k\)-Band-TM \(B\), so dass \(L(A) = L(B)\) und
+\[
+\Space_B(n) \leq \frac{\Space_A(n)}{2} + 2.
+\]\\
+\end{lemma}
+
+\begin{definition}
+Für jede Funktion \(f: \N \to \R^+\) sei
+\[
+\mathcal{O}(f(n)) = \{ r: \N \to \R^+ \ |\ \exists n_0 \in \N, \exists c \in \N: \forall n \geq n_0: r(n) \leq c \cdot f(n)\}.
+\]
+
+Jede Funktion \(r \in \mathcal{O}(f(n))\) wächst \textbf{asymptotisch nicht schneller} als \(f\).\\
+\end{definition}
+
+\begin{definition}
+Für jede Funktion \(g: \N \to \R^+\) sei
+\[
+\Omega(g(n)) = \{ s: \N \to \R^+ \ |\ \exists n_0 \in \N, \exists d \in \N: \forall n \geq n_0: s(n) \geq \frac{1}{d} \cdot g(n) \}.
+\]
+
+Für jede Funktion \(s \in \Omega(g(n))\) sagen wir, dass die Funktion \(s\) \textbf{asymptotisch mindestens so schnell wächst wie \(g\)}.\\
+\end{definition}
+
+\begin{definition}
+Für jede Funktion \(h: \N \to \R^+\) sei
+\[
+\Theta(h(n)) = \mathcal{O}(h(n)) \cap \Omega(h(n)).
+\]
+
+Falls \(g \in \Theta(h(n))\) so sagen wir, dass \(g\) und \(h\) \textbf{asymptotisch gleich sind}.\\
+\end{definition}
+
+\begin{definition}
+Seien \(f, g: \N \to \R^+\). Falls
+\[
+\lim_{n \to \infty} \frac{f(n)}{g(n)} = 0,
+\]
+dann \textbf{wächst \(g\) asymptotisch schneller als \(f\)} und wir schreiben \(f(n) = o(g(n))\).\\
+\end{definition}
+
+\begin{definition}
+Sei \(L\) eine Sprache und \(f: \N \to \R^+\) eine Funktion.
+\begin{itemize}
+  \item \(\mathcal{O}(f(n))\) ist eine \textbf{obere Schranke für die Zeitkomplexität}, wenn es eine MTM \(A\) gibt, mit \(L(A) = L\) und \(\Time_A(n) \in \mathcal{O}(f(n))\).
+  \item \(\Omega(f(n))\) ist eine \textbf{untere Schranke für die Zeitkomplexität}, wenn es eine MTM \(A\) gibt, mit \(L(A) = L\) und \(\Time_A(n) \in \Omega(f(n))\).
+  \item Eine MTM \(A\) heisst \textbf{optimal für L}, falls \(\Time_C(n) \in \mathcal{O}(f(n)) \cap \Omega(f(n))\).\\
+\end{itemize}
+\end{definition}
+
+\section{Komplexitätsklassen}
+Die Komplexitätsklassen sind Sprachklassen. Wir betragen also Mengen von Entscheidungsproblemen.
+
+\begin{definition}
+Für alle Funktionen \(f, g: \N \to \R^+\) seien:
+\begin{itemize}
+  \item \( \operatorname{TIME}(f) = \{ L(M) \ |\ M \text{ ist eine MTM}, \Time_M(n) \in \mathcal{O}(f(n)) \} \)
+  \item \( \operatorname{SPACE}(g) = \{ L(M) \ |\ M \text{ ist eine MTM}, \Space_M(n) \in \mathcal{O}(g(n)) \} \)
+  \item \( \operatorname{DLOG} = \operatorname{SPACE}(\log_2(n)) \)
+  \item \( \operatorname{P} = \bigcup_{c \in \N} \operatorname{TIME}(n^c) \)
+  \item \( \operatorname{PSPACE} = \bigcup_{c \in \N} \operatorname{SPACE}(n^c) \)
+  \item \( \operatorname{EXPTIME} = \bigcup_{c \in \N} \operatorname{TIME}(2^{n^d}) \)\\
+\end{itemize}
+\end{definition}
+
+\begin{lemma}
+\(
+  \forall t: \N \to \R^+ \text{ gilt } \operatorname{TIME}(t(n)) \subseteq \operatorname{SPACE}(t(n)).
+\)\\
+\end{lemma}
+
+\begin{corollary}
+\( \operatorname{P} \subseteq \operatorname{PSPACE} \)\\
+\end{corollary}
+
+\begin{definition}
+Eine Funktion \(s: \N \to \N\) heisst \textbf{platzkonstruierbar}, falls eine 1-Band-TM \(M\) existiert, so dass gilt:
+\begin{itemize}
+  \item \(\forall n \in \N: \Space_M(n) \leq s(n)\)
+  \item für jede Eingabe \(O^n\) und \(n \in \N\) generiert \(M\) das Wort \(0^{s(n)}\) auf seinem Arbeitsband und hält in \(q_\text{accept}\).
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+Ein Funktion \(t: \N \to \N\) heisst \textbf{zeitkonstruierbar}, falls eine MTM \(A\) existiert, so dass gilt:
+\begin{itemize}
+  \item \( \Time_A(n) \in \mathcal{O}(t(n))\)
+  \item für jede Eingabe \(0^n, n \in \N\) generiert \(A\) das Wort \(0^{t(n)}\) auf dem ersten Arbeitsband und hält in \(q_\text{accept}\)\\
+\end{itemize}
+\end{definition}
+
+\todo[inline]{Seite 217}
