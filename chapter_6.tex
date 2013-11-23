@@ -125,7 +125,7 @@ Für alle Funktionen \(f, g: \N \to \R^+\) seien:
 Eine Funktion \(s: \N \to \N\) heisst \textbf{platzkonstruierbar}, falls eine 1-Band-TM \(M\) existiert, so dass gilt:
 \begin{itemize}
   \item \(\forall n \in \N: \Space_M(n) \leq s(n)\)
-  \item für jede Eingabe \(O^n\) und \(n \in \N\) generiert \(M\) das Wort \(0^{s(n)}\) auf seinem Arbeitsband und hält in \(q_\text{accept}\).
+  \item für jede Eingabe \(O^n\) und \(n \in \N\) generiert \(M\) das Wort \(0^{s(n)}\) auf seinem Arbeitsband und hält in \(q_\text{accept}\).\\
 \end{itemize}
 \end{definition}
 
@@ -137,4 +137,253 @@ Ein Funktion \(t: \N \to \N\) heisst \textbf{zeitkonstruierbar}, falls eine MTM 
 \end{itemize}
 \end{definition}
 
-\todo[inline]{Seite 217}
+\begin{lemma}
+Sei \(s: \N \to \N\) eine platzkonstruierbare Funktion. Sei \(M\) eine MTM mit \(\forall x \in L(M): \Space_M(x) \leq s(|x|)\). Dann existiert eine MTM \(A\) mit \(L(A) = L(M)\) und \(\Space_A(n) \leq s(n)\). Daraus folgt direkt \(\forall y \in \Sigma_A^*: \Space_A(y) \leq s(|y|)\).\\
+\end{lemma}
+
+Dieses Lemma zeigt, dass es für jede platzkonstruierbare Funktion ausreicht, einen MTM \(M\) mit \(L(M) = L\) mit \(s(n)\)-platzbeschränkten Berechnungen auf allen Eingaben aus \(L\) zu konstruieren, um die Existenz einer MTM \(A\) zu garantieren, die ebenfalls \(L\) akzeptiert und auf allen Eingaben (auch solchen aus \(L^C\) die Schranke \(s(n)\) für die Platzkomplexität einhält.
+
+Analog zu diesem Lemma, gibt es auch eines für die Zeitkomplexität.\\
+
+\begin{lemma}
+Sei \(t: \N \to \N\) eine zeitkonstruierbare Funktion. Sei \(M\) eine MTM mit \(\forall x \in L(M): \Time_M(x) \leq t(|x|)\). Dann existiert eine MTM \(A\) mit \(L(A) = L(M)\) und \(\Time_A(n) \in \mathcal(O)(t(n))\).\\
+\end{lemma}
+
+\begin{satz}
+Für jede platzkonstruierbare Funktion \(s\) mit \(s(n) \geq \log_2(n)\) gilt \(\operatorname{SPACE}(s(n)) \subseteq \bigcup_{c \in \N} \operatorname{TIME}(c^{s(n)})\).\\
+\end{satz}
+
+\begin{corollary}
+\(\operatorname{DLOG} \subseteq \operatorname{P}\) und \(\operatorname{PSPACE} \subseteq \operatorname{EXPTIME}\)\\
+\end{corollary}
+
+\section{Nichtdeterministische Komplexitätsmasse}
+
+\begin{definition}
+Sei \(M\) eine MTM oder eine nichtdeterministische MTM und \(x \in L(M) \subseteq \Sigma^*\). Die \textbf{Zeitkomplexität von \(M\) auf \(x\)}, \(\Time_M(x)\), ist die Länge der kürzesten akzeptierenden Berechnung von \(M\) auf \(x\). Die \textbf{Zeitkomplexität von \(M\)} ist die Funktion \(\Time_M: \N \to \N\), definiert durch
+\[
+\Time_M(n) = \max \{ \Time_M(x) \ |\ x \in L(M) \cap \Sigma^n \}
+\]\\
+\end{definition}
+
+\begin{definition}
+Sei \(C = C_1, C_2, \ldots, C_m\) eine akzeptierende Berechnung von \(M\) auf \(x\). Sei \(\Space_M(C_i)\) die Speicherkomplexiät der Konfiguration \(C_i\). Dann wird folgendes definiert:
+\[
+\Space_M(C) = \max \{\Space_M(C_i) \ |\ i = 1, 2, \ldots, m \}
+\]\\
+\end{definition}
+
+\begin{definition}
+Die \textbf{Speicherplatzkomplexität von \(M\) auf \(x\)} ist dann
+\[
+\Space_M(x) = \min \{ \Space_M(C) \ |\ C \text{ ist eine akzeptierende Berechnung von M auf x}\}.
+\] \\
+\end{definition}
+
+\begin{definition}
+Die \textbf{Speicherplatzkomplexität von \(M\)} ist die Funktion \(\Space_M: \N \to \N\) definiert durch
+\[
+\Space_M(n) = \max \{ \Space_M(x) \ |\ x \in L(M) \cap \Sigma^n \}.
+\]\\
+\end{definition}
+
+\begin{definition}
+Für alle Funktionen \(f, g: \N \to \R^+\) sei:
+\begin{itemize}
+  \item \(\operatorname{NTIME}(f) = \{ L(M) \ |\ M \text{ eine nichtdeterministische MTM mit } \Time_M(n) \in \mathcal{O}(f(n)) \}\)
+  \item \( \operatorname{NSPACE}(g) = \{ L(M) \ |\ M \text{ ist eine nichtdeterministische MTM mit } \Time_M(n) \in \mathcal{O}(g(n)) \} \)
+  \item \( \operatorname{NLOG} = \operatorname{NSPACE}(\log_2(n)) \)
+  \item \( \operatorname{NP} = \bigcup_{c \in \N} \operatorname{NTIME}(n^c) \)
+  \item \( \operatorname{NPSPACE} = \bigcup_{c \in \N} \operatorname{NPSPACE}(n^c) \)\\
+\end{itemize}
+\end{definition}
+
+\begin{lemma}
+\begin{itemize}
+  \item \(\operatorname{NTIME}(t) \subseteq \operatorname{NSPACE}(t) \)
+  \item \(\operatorname{NSPACE}(t) \subseteq \bigcup_{c \in \N} \operatorname{NTIME}(c^{s(n)}) \)\\
+\end{itemize}
+\end{lemma}
+
+\begin{satz}
+Für jede Funktion \(t: \N \to \R^+\) und jede zeit- und platzkonstruierbare Funktion \(s: \N \to \N\) mit \(s(b) \geq \log_2(b)\) gilt:
+\begin{itemize}
+  \item \(\operatorname{TIME}(t) \subseteq \operatorname{NTIME}(t)\)
+  \item \(\operatorname{SPACE}(t) \subseteq \operatorname{NSPACE}(t)\)
+  \item \(\operatorname{NTIME}(s(n)) \subseteq \operatorname{SPACE}(s(n)) \subseteq \bigcup_{c \in \N} \operatorname{TIME}(c^{s(n)})\)\\
+\end{itemize}
+\end{satz}
+
+\begin{corollary}\ 
+\begin{itemize}
+  \item \(\operatorname{NP} \subseteq \operatorname{PSPACE}\)
+  \item \( \operatorname{NLOG} \subseteq \operatorname{P} \)
+  \item \( \operatorname{NPSPACE} \subseteq \operatorname{EXPTIME} \)
+  \item \( \operatorname{PSPACE} = \operatorname{NPSPACE} \)\\
+\end{itemize}
+\end{corollary}
+
+Daraus erhalten wir die \textbf{fundamentale Komplexitätsklassenhierarchie der sequentiellen Berechnungen}
+\[
+\operatorname{DLOG} \subseteq \operatorname{NLOG} \subseteq \operatorname{P} \subseteq \operatorname{NP} \subseteq \operatorname{PSPACE} \subseteq \operatorname{EXPTIME}
+\]
+
+\section{NP und Beweisverifikation}
+\begin{definition}
+\[
+\operatorname{SAT} = \{ x \in \Sigma_\text{logic}^* | x \text{ kodiert eine erfüllbare Formel in KNF}\}
+\]
+\end{definition}
+
+\begin{definition}
+Sei \(L \subseteq \Sigma^*\) eine Sprache und \(p: \N \to \N\) eine Funktion. Eine MTM \(A\) ist ein \textbf{\(p\)-Verifizierer für L}, \(V(A) = L\), falls \(A\) mit folgenden Eigenschaften auf allen Eingaben aus \(\Sigma^* \times \Sigma_\text{bool}^*\) arbeitet:
+\begin{enumerate}
+  \item \(\Time_A(w, x) \leq p(|w|)\)
+  \item Für jedes \(w \in L\) existiert ein \(x \in \Sigma_\text{bool}^*\), so dass \(|x| \leq p(|w|)\) und \((w, x) \in L(A)\). Das Wort \(x\) nennt man dabei den \textbf{Beweis} oder \textbf{Zeugen} der Behauptung \(w \in L\).
+  \item Für jedes \(y \notin L\) gilt \((y, z) \notin L(A)\) für alle \(z \in \Sigma_\text{bool}^*\)\\
+\end{enumerate}
+\end{definition}
+
+\begin{definition}
+Die MTM \(A\) ist ein \textbf{Polynomialzeit-Verifizierer}, falls \(A\) ein Verifizierer ist und \(p(n) \in \mathcal{O}(n^k)\) für ein \(k \in \N\).\\
+\end{definition}
+
+\begin{definition}
+Die Klasse der in \textbf{Polynomialzeit verifizierbaren Sprachen} ist
+\[
+\operatorname{VP} = \{ V(A) \ |\ A \text{ ist ein Polynomialzeit-Verifizierer}\}
+\]
+\end{definition}
+
+\begin{remark}
+Für einen \(p\)-Verifizierer \(A\) sind \(L(A)\) und \(V(A)\) unterschiedliche Sprachen:
+\[
+V(A) = \{ w \in \Sigma^* \ |\ \exists x \in \Sigma_\text{bool}^*: |x| \leq p(|w|) \land (w, x) \in L(A)\}
+\]
+
+Somit ist \(A\) ein deterministischer Algorithmus, der für eine Eingabe \((w, x)\) verifiziert, ob \(x\) ein Beweis für ``\(w \in L\)'' ist. \(A\) verifiziert erfolgreich, wenn \(w \in V(A)\) und somit ein Beweis \(x\) für ``\(w \in L\)'' gibt mit \(|x| \leq p(|w|)\).  Die Gleichheit \(V(A) = L\) fordert \(\forall w \in L: \exists x \in \Sigma_\text{bool}^*: |x| \leq p(|w|)\).\\
+\end{remark}
+
+\begin{satz}
+\(VP = NP\)\\
+\end{satz}
+
+\section{NP-Vollständigkeit}
+Das Konzept der NP-Vollständigkeit basiert auf der Annahme, dass \(P \subsetneq NP\)!\\
+
+\begin{definition}
+\(L_1 \subseteq \Sigma_1^*, L_2 \subseteq \Sigma_2^*\) zwei Sprachen. Dann ist \textbf{\(L_1\) polynomiell auf \(L_2\) reduzierbar}, \(L_1 \leq_p L_2\), falls eine polynomielle TM \(A\) existiert, so dass für jedes Wort \(x \in \Sigma_1^*\) ein Wort \(A(x) \in \Sigma_2^*\) erzeugt wird und gilt:
+\[
+x \in L_1 \Leftrightarrow A(x) \in L_2.
+\]
+
+In einem solchen Fall wird \(A\) als \textbf{polynomielle Reduktion} bezeichnet.
+\end{definition}
+
+Somit entspricht die polynomielle Reduktion der EE-Reduktion, nur mit der zusätzlichen Forderung, dass die dabei erzeugte TM \(A\) in polynomieller Zeit läuft.\\
+
+\begin{definition}
+Eine Sprache \(L\) ist \textbf{NP-schwer}, falls gilt:
+\[
+\forall L' \in NP: L' \leq_p L.
+\]
+\end{definition}
+
+\begin{definition}
+Eine Sprache \(L\) ist \textbf{NP-vollständig}, falls
+\begin{itemize}
+  \item \(L \in NP\)
+  \item \(L\) ist NP-schwer\\
+\end{itemize}
+
+\end{definition}
+
+\begin{lemma}
+Falls \(L \in P\) und \(L\) ist NP-schwer, dann muss \(P = NP\) gelten.\\
+\end{lemma}
+
+\begin{satz}
+SAT ist NP-vollständig.\\
+\end{satz}
+
+\begin{lemma}
+Seien \(L_1, L_2\) zwei Sprachen. Falls \(L_1 \leq_p L_2\) und \(L_1\) ist NP-schwer, dann ist auch \(L_2\) NP-schwer.\\
+\end{lemma}
+
+Sprachen Definitionen:
+\begin{itemize}
+  \item \(\operatorname{SAT} = \{ \Phi \ |\ \Phi \text{ ist eine erfüllbare Formel in KNF} \} \)
+  \item \(\operatorname{3SAT} = \{ \Phi \ |\ \Phi \text{ ist eine erfüllbare Formel in 3KNF} \} \)
+  \item \(\operatorname{CLIQUE} = \{ (G, k) \ |\ G \text{ ist ein ungerichteter Graph, der eine k-Clique enthält} \} \)
+  \item \(\operatorname{VC} = \{ (G, k) \ |\ G \text{ ist ein ungerichteter Graph und Knotenüberdeckung der Mächtigkeit höchstens } k \} \)
+\end{itemize}
+
+Für eine Formel \(\Phi\) sei \(\varphi\) eine Belegung der Variabeln von \(\Phi\). Somit bezeichnet \(\varphi(\Phi)\) den Wahrheitswert von \(\Phi\) bei der Belegung \(\varphi\).\\
+
+\begin{lemma}
+\(\operatorname{SAT} \leq_p \operatorname{CLIQUE}\)
+\end{lemma}
+
+\begin{proof}
+Sei \(\Phi = F_1 \land F_2 \land \ldots \land F_m\) eine Formel in KNF. Somit gilt \(F_i = (l_{i, 1} \lor l_{i, 2} \lor \ldots \lor l_{i, k_i}) \) für \(k_i \in \N - \{0\}\) und \(i = 1, 2, \ldots, m\).
+
+Es soll nun aus der Eingabe einer KNF Formel \(\Phi\) die Eingabe \(G, k\) für das Cliquenproblem erstellt werden, so dass
+\[
+\Phi \in \operatorname{SAT} \Leftrightarrow (G, k) \in \operatorname{CLIQUE}.
+\]
+
+Dies geschieht durch folgende Zuweisungen:
+\begin{itemize}
+  \item \(k = m\)
+  \item \(G = (V, E)\) wobei:
+  \begin{itemize}
+    \item \(V = \{[i, j]\ |\ 1 \leq i \leq m \land 1 \leq j \leq k_i\}\). Wir erzeugen also für jedes Literal in \(\Phi\) einen Knoten in \(G\).
+    \item \(E = \{ \{ [i, j], [r, s] \}\ |\ \forall [i,j], [r,s] \in V \land i \neq r \land l_{i,j} \neq \overline{l_{r, s}} \}\). Somit verbindet eine Kante \(\{[i, j], [r, s]\}\) nur Knoten aus unterschiedlichen Klauseln (die \(F_i\)) und achtet darauf, dass das Literal von \([i, j]\) nicht die Negation des Literals von \([r,s]\) ist.
+  \end{itemize}
+\end{itemize}
+
+Es ist somit klar, dass wir mittels eines polynomiellen Algorithmus aus \(\Phi\) das Cliqueproblem \((G, k)\) generieren können. Es bleibt nun zu zeigen, dass 
+\[
+  \Phi \text{ ist erfüllbar } \Leftrightarrow G \text{ enthält eine Clique der Grösse } k = m.
+\]
+
+Grundidee für den Beweis: Zwei Literale \(l_{i,j}\) und \(l_{r, s}\) sind in \(G\) verbunden, wenn beide Literale aus unterschiedlichen Klauseln stammen und beide gleichzeitig den Wert 1 annehmen können. Somit entspricht eine Clique in \(G\) der Belegung von Variabeln von \(\Phi\), die die Literale der Knoten der Clique erfüllen (zu 1 auswerten).
+
+Der Beweis wird in beide Richtungen geführt.
+
+``\(\Rightarrow\)'': Sei \(\Phi\) eine erfüllbare Formel. Dann existiert eine Belegung \(\varphi\), so dass \(\varphi(\Phi) = 1\). Daraus folgt, dass für alle Klauseln \(F_i\) zu gelten hat, dass \(\varphi(F_i) = 1\). Daraus wiederrum folgt, dass in einer Klausel \(F_i\) für mindestens ein Literal \(l_{i, \alpha_i}\) zu gelten hat, dass \(\varphi(l_{i, \alpha_i}) = 1\) wobei \(\alpha_i \in \{1, \ldots, k_i\}\).
+
+Es ist klar, dass \([1, \alpha_1], [2, \alpha_2], \ldots, [m, \alpha_m]\) aus unterschiedlichen Klauseln stammen.
+
+Die Gleichheit \(l_{i, \alpha_i} = \overline{l_{j, \alpha_j}}\) für beliebige \(i \neq j\) impliziert, dass für jede Belegung \(\omega\) gelten würde: \(\omega(l_{i, \alpha_i}) = \omega(l_{j, \alpha_j}\) und daraus wiederum folgt, dass \(\varphi(l_{i, \alpha_i}) = \varphi(l_{j, \alpha_j}) = 1\) nicht möglich wäre. Also ist \(l_{i, \alpha_i} \neq \overline{l_{j, \alpha_j}}\) für alle \(i \neq j\) und \(\{[i, \alpha_i], [j, \alpha_j]\} \in E\). Somit ist \(\{[i, \alpha_i]\ |\ 1 \leq i \leq m\}\) eine Clique der Grösse \(m\).
+
+``\(\Leftarrow\)'': Sei \(Q\) eine Clique von \(G\) mit \(k = m\) Knoten. Wir wissen, dass zwei Knoten durch eine Kante in \(G\) nur dann verbunden sind, wenn sie zwei Literale aus unterschiedlichen Klauseln entsprechen. Es existieren somit \(\alpha_1, \alpha_2, \ldots, \alpha_m, \alpha_p \in \{1, 2, \ldots, k_p\}\) für \(p = 1, \ldots, m\), so dass \(\{ [1, \alpha_1], [2, \alpha_2], \ldots, [m, \alpha_m] \}\) die Knoten von Q sind. Somit gibt es eine Belegung \(\varphi\) der Variablen von \(\Phi\), so dass \(\varphi(l_{1, \alpha_1}) = \varphi(l_{2, \alpha_2}) = \cdots = \varphi(l_{m, \alpha_m}) = 1\). Dies wiederum impliziert direkt, dass gilt: \(\varphi(F_1) = \varphi(F_2) = \cdots = \varphi(F_m) = 1\) und so erfüllt die Belegung \(\varphi\) die Formel \(\Phi\).\\
+\end{proof}
+
+\begin{lemma}
+\(\operatorname{CLIQUE} \leq_p \operatorname{VC}\)\\
+\end{lemma}
+
+\begin{lemma}
+\(\operatorname{SAT} \leq_p \operatorname{3SAT}\)\\
+\end{lemma}
+
+\begin{definition}
+\textbf{NPO} ist die Klasse der Optimierungsprobleme, wobei
+\[
+U = (\Sigma_I, \Sigma_O, L, \mathcal{M}, \operatorname{cost}, \operatorname{goal}) \in NPO,
+\]
+
+falls folgende Bedingungen erfüllt sind:
+\begin{itemize}
+  \item \(L \in P\). Es kann also effizient überprüft werden, ob ein \(x \in \Sigma_I^*\) eine zulässige Eingabe für \(U\) ist.
+  \item es existiert ein Polynom \(p_U\), so dass
+  \begin{itemize}
+    \item für jedes \(x \in L\) und jedes \(y \in \mathcal{M}(x): |y| \leq p_U(|x|)\). Jede zulässige Lösung von \(U\) ist polynomiell in der Eingabegrösse.
+    \item es existiert ein polynomieller Algorithmus \(A\), der für jedes \(y \in \Sigma_O^*\) und jedes \(x \in L\) mit \(|y| \leq p_U(|x|)\) entscheidet, ob \(y \in \mathcal{M}(x)\) oder nicht.
+  \end{itemize}
+  \item die Funktion \(\operatorname{cost}\) kann man in polynomieller Zeit berechnen.
+\end{itemize}
+\end{definition}
+
+\todo[inline]{Seite 256}
