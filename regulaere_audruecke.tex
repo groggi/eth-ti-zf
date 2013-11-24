@@ -1,0 +1,100 @@
+\chapter{Reguläre Ausdrücke}
+Thema des 2. Selbststudiums. Basierend auf dem Buch \textit{Introduction to Automata Theory, Languages, and Computation} von \textit{John E. Hopcroft, Rajeev Motwani, Jeffrey D. Ullman}.
+
+
+\section{Endliche Automaten mit Epsilon-Übergängen}
+Nichtdeterministische Endliche Automaten (NEA) werden nun um Übergänge auf dem leeren Wort (\(\epsilon\)) erweitert. Ist aus einem Zustand ein solcher Übergang zu einem anderen Zustand vorhanden, so kann der NEA sich ``spontan'' entscheiden diesen auszuführen, ohne eine Eingabe zu lesen.
+
+Diese Erweiterung des NEA macht ihn aber im Bezug auf die Sprachklasse, die durch einen ``normalen'' NEA akzeptiert werden, nicht mächtiger. Nachfolgend werden solche erweiterten NEA als \textbf{\(\epsilon\)-NEA} bezeichnet.
+
+Wichtig ist, dass das Symbol für das leere Wort nicht Teil des zugrundeliegenden Alphabets ist.
+
+Ein \(\epsilon\)-NEA entspricht in der formalen Definition einem NEA, bis auf die Erweiterung der Übergangsfunktion \(\delta\), welche nun definiert ist als
+\[
+\delta: Q \times (\Sigma \cup \{\epsilon\}) \to \mathcal{P}(Q).
+\]
+
+\subsection{Epsilon-Abschluss}
+Informell geht es beim Epsilon-Abschluss darum die Menge aller Zustände zu finden, die von einem Startzustand erreichbar sind, in dem man nur Pfaden folgt, die mit einem \(\epsilon\) gekennzeichnet sind. Man möchte also alle Zustände haben, die von einem Startzustand erreichbar sind, ohne ein Symbol in der Eingabe gelesen zu haben.\\
+
+\begin{definition}
+Der \textbf{Epsilon-Abschluss}, \(\operatorname{ECLOSE(q)}\), eines Zustands \(q \in Q\) ist rekursiv wie folgt definiert:
+\begin{description}
+  \item [Beginn:] Der Startzustand \(q\) ist in \(\operatorname{ECLOSE}(q)\).
+  \item [Rekursion:] Wenn ein Zustand \(p \in \operatorname{ECLOSE}(q)\) und es gibt einen Übergang von \(p\) zum Zustand \(r\), der mit \(\epsilon\) beschriftet ist, dann ist gilt auch \(r \in \operatorname{ECLOSE}(q)\). Formal ausgedrückt: \[p \in \operatorname{ECLOSE}(q) \Rightarrow \delta(p, \epsilon) \in \operatorname{ECLOSE}(q)\]
+\end{description}
+\end{definition}
+
+\section{Reguläre Ausdrücke}
+\begin{definition}
+Für einen regulären Ausdruck \(E\) ist \(L(E)\) die Sprache, die durch den regulären Ausdruck beschrieben wird.\\
+\end{definition}
+
+\begin{definition}
+Reguläre Ausdrücke werden rekursiv definiert:
+\begin{description}
+  \item[Beginn:]\ 
+  \begin{itemize}
+    \item Die Konstanten \(\epsilon\) und \(\emptyset\) sind reguläre Ausdrucke. Dabei gilt \(L(\epsilon) = \{\epsilon\}\) und \(L(\emptyset) = \emptyset\).
+    \item Ein Symbol \(a \in \Sigma\) ist ein regulärer Ausdruck. Dabei gilt \(L(a) = \{a\}\).
+  \end{itemize}
+  
+  \item[Induktion:]\ 
+  \begin{itemize}
+    \item Wenn \(E, F\) zwei reguläre Ausdrücke sind, dann ist auch \(E + F\) ein regulärer Ausdruck. Dabei beschreibt \(E + F\) die Vereinigung zweier Sprachen: \(L(E + F) = L(E) \cup L(F)\).
+    \item Wenn \(E, F\) zwei reguläre Ausdrücke sind, dann ist auch \(EF\) ein regulärer Ausdruck. Dabei beschreibt \(EF\) die Konkatenation zweier Sprachen: \(L(EF) = L(E) \cdot L(F)\).
+    \item Wenn \(E\) ein regulärer Ausdruck ist, dann ist auch \(E^*\) ein regulärer Ausdruck. Dabei gilt: \(L(E^*) = (L(E))^*\).
+    \item Wenn \(E\) ein regulärer Ausdruck ist, dann ist auch \((E)\) ein regulärer Ausdruck. Dabei gilt: \(L((E)) = L(E)\).\\
+  \end{itemize}
+\end{description}
+\end{definition}
+
+\subsection{Reguläre Ausdrücke und endliche Automaten}
+\subsubsection{EA zu regulärem Ausdruck}
+Sei der EA \(A\) gegeben und wir möchten nun den regulären Ausdruck \(R\) konstruieren, so dass \(L(A) = L(R)\).
+
+Sei \(Q = \{1, 2, \ldots, n\}\) die Zustände von \(A\). Dies können wir durch umbenennen der Zustände von \(A\) erreichen im allgemeinen Fall.
+
+Nun definieren wir \(R_{i, j}^{(k)}\) als den regulären Ausdruck, dessen Sprache (\(L(R)\)) eine Menge von Wörtern \(w\) ist, so dass jedes \(w \in L(R)\) einen Pfad beschreibt im EA \(A\) vom Zustand \(i \in Q\) zum Zustand \(j \in Q\) und gleichzeitig keinen inneren Knoten \(p \in Q\) enthält mit \(p \geq k\). Dabei ist ein innerer Knoten jeder Knoten im Pfad, der nicht gleich \(i\) oder \(j\) ist.
+
+Um \(R_{i, j}^{(k)}\) zu konstruieren, wird folgender induktiver Ansatz gewählt. Dieser beginnt bei \(k = 0\) und endet mit \(k = n\).
+\begin{description}
+  \item[Beginn:] Sei \(k = 0\). Da alle Zustände 1 oder höher sind, ist die hier vorhandene Restriktion, dass der Pfad keine inneren Knoten hat. Es gibt genau zwei Arten von Pfaden mit dieser Eigenschaft:
+  \begin{itemize}
+    \item Ein Übergang vom Zustand \(i\) direkt zum Zustand \(j\).
+    \item Ein Pfad der Länge 0, der nur aus einem Zustand \(i\) besteht.
+  \end{itemize}
+  Wenn \(i \neq j\), dann kann nur der erste Fall zutreffen. Somit suchen wir im EA \(A\) nach Eingabesymbolen \(a \in \Sigma\), die zu einem Übergang von \(i\) zu \(j\) auslösen würden.
+  \begin{enumerate}
+    \item Falls kein solches \(a\) existiert, dann gilt \(R_{i, j}^{(0)} = \emptyset\).
+    \item Falls genau ein solches \(a\) existiert, dann gilt \(R_{i, j}^{(0)} = a\).
+    \item Falls es mehrere solche Symbole gibt, also \(a_1, a_2, \ldots, a_k\), dann gilt \(R_{i, j}^{(0)} = a_1 + a_2 + \cdots a_k\).
+  \end{enumerate}
+  Wenn aber \(i = j\), dann sind nur Pfade der Länge 0 erlaubt und alle Schleifen von \(i\) zu sich selbst. Solche Pfade der Länge 0 werden im regulären Ausdruck durch \(\epsilon\) beschrieben. Somit fügen wir \(\epsilon\) mittels Vereinigung zu den vorhin erzeugten regulären ausdrücken. Es gilt also:
+  \begin{enumerate}
+    \item Falls kein solches \(a\) existiert, dann gilt \(R_{i, j}^{(0)} = \epsilon\).
+    \item Falls genau ein solches \(a\) existiert, dann gilt \(R_{i, j}^{(0)} = \epsilon + a\).
+    \item Falls es mehrere solche Symbole gibt, also \(a_1, a_2, \ldots, a_k\), dann gilt \(R_{i, j}^{(0)} = \epsilon + a_1 + a_2 + \cdots a_k\).
+  \end{enumerate}
+  
+  \item[Induktion:] Gehen wir davon aus, dass es einen Pfad von \(i\) nach \(j\) gibt, der durch keinen Zustand mit höherem Wert als \(k\) geht. Dann gibt es zwei Möglichkeiten:
+  \begin{enumerate}
+    \item Der Pfad geht nie durch den Zustand \(k\). In diesem Fall gilt \(R_{i, j}^{(k)} = R_{i, j}^{(k-1)}\).
+    \item Der Pfad geht mindestens einmal durch den Zustand \(k\). Dann lässt sich dieser Pfad in mehrere Teile aufteilen. Das erste Stück geht von \(i\) zu \(k\) ohne \(k\) als inneren Knoten zu haben und das letzte Stück geht von \(k\) zu \(j\), ohne \(k\) als inneren Knoten zu haben. Somit können wir folgenden regulären Ausdruck verwenden:
+    \[
+    R_{i, j}^{(k)} = 
+      \underbrace{R_{i, k}^{(k -1)}}_{\text{erstes Stück}}
+      \underbrace{(R_{k, k}^{(k-1)})^*}_{\substack{\\ \ \\ \ \text{mittlere Stücke, die beliebig von }\\ k \text{ zu } k \text{ verlaufen}}}
+      \underbrace{R_{k, j}^{(k-1)}}_{\text{letztes Stück}}
+    \]
+  \end{enumerate}
+  Kombinieren wir beide Möglichkeiten, so erhalten wir
+  \[
+    R_{i, j}^{(k)} = R_{i, j}^{(k - 1)} + R_{i, k}^{(k-1)} (R_{k,k}^{(k-1)})^* R_{k, j}^{(k-1)}
+  \]
+\end{description}
+
+Es reicht also, wenn wir beim kleinsten \(k\) beginnen und Schritt für Schritt diesen erhöhen. So gelangen wir schlussendlich zum \(R_{1, j}^{(n)}\), wobei \(j \in F\), also ein akzeptierender Zustand.
+
+\todo[inline]{Regulären Ausdruck bauen mittels entfernen von Zuständen ausgelassen, da sehr visuell ist}
+\todo[inline]{(N)EA bauen aus einem regulären Ausdruck ausgelassen, da sehr visuell ist}
