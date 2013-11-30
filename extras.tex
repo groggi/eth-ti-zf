@@ -1,4 +1,4 @@
-\chapter{Weitere Informationen}
+\chapter{Hilfreiches und Verschiedenes}
 \section{Hamiltonischer Kreis}
 Ein \textbf{Hamiltonischer Kreis} eines Graphen $G$ ist ein geschlossener Weg, der jeden Knoten von $G$ genau einmal enthält.
 
@@ -24,6 +24,48 @@ Gesucht wird die minimale Knotenmenge (\ref{sec:knotenueberdeckung}), die eine K
 
 \subsection{Sprachenzugehörigkeit}
 \todo[inline]{Übersicht welche Sprachen zu welcher Klasse gehören}
+
+\section{Arithmetische Operationen auf MTMs}
+Sei hier jeweils \(M\) eine MTM. Zu dieser MTM gibt es immer eine äquivalente 1-Band-TM (die Definition von Platzkonstruierbarkeit verlangt zum Beispiel eine 1-Band-TM). Stehe auf dem ersten Arbeitsband \(0^n\) und auf dem zweiten Arbeitsband \(1^m\). Das dritte Arbeitsband soll \(0^{n\ \square\ m}\) enthalten, wobei \(\square \in \{+, -, \times, \div, \ldots\}\).
+
+\subsection{Addition}
+Auf dem dritten Arbeitsband soll \(0^{n + m}\) stehen.
+
+Dazu liest \(M\) das erste Arbeitsband und schreibt auf das dritte eine \(0\) für jede gelesene \(0\). Hat \(M\) die letzte \(0\) gelesen, so beginnt \(M\) mit dem einlesen des zweiten Arbeitsbandes. Für jede gelesene \(1\) schreibt \(M\) eine \(0\) auf das dritte Arbeitsband. Danach geht \(M\) in \(q_\text{accept}\) über.
+
+Auf dem dritten Arbeitsband steht nun \(0^{n + m}\).
+
+\subsection{Subtraktion}
+Auf dem dritten Arbeitsband soll \(0^{n - m}\) stehen, wobei wir hier von \(n \geq m\) ausgehen.
+
+Dazu schreibt \(M\) eine \(0\) auf das dritte Arbeitsband für jede gelesene \(0\) auf dem ersten Arbeitsband. Danach liest \(M\) das zweite Arbeitsband und löscht von rechts nach links je eine \(0\) für jede gelesene \(1\) auf dem zweiten Arbeitsband. Danach geht \(M\) in \(q_\text{accept}\) über.
+
+Auf dem dritten Arbeitsband steht nun \(0^{n - m}\).
+
+Falls \(n < m\), so muss eine zusätzliche Abbruchbedingung hinzugefügt werden.
+
+\subsection{Multiplikation}
+Auf dem dritten Arbeitsband soll \(0^{n \times m}\) stehen.
+
+\(M\) liest schrittweise die \(0\)-en auf dem ersten Arbeitsband. Für jede gelesene \(0\) liest \(M\) alle \(1\)-en vom zweiten Arbeitsband und für jede gelesene \(1\) schreibt es eine \(0\) auf das dritte Arbeitsband. Nachdem alle \(1\) gelesen sind, fährt \(M\) den Lese-/Schreibkopf an den Anfang vom zweiten Arbeitsband, bevor es das nächste Zeichen auf dem ersten Arbeitsband verarbeitet. Sind alle \(0\)-en auf dem ersten Arbeitsband gelesen, so geht \(M\) in \(q_\text{accept}\) über.
+
+Auf dem dritten Arbeitsband steht nun \(0^{n \times m}\).
+
+\subsection{Division}
+Auf dem dritten Arbeitsband soll \(0^{\lfloor n \div m \rfloor}\) stehen.
+
+Dazu liest \(M\) für jede \(1\) auf dem zweiten Arbeitsband eine \(0\) auf dem ersten Arbeitsband. Ist \(M\) am Ende des zweiten Arbeitsbandes, so schreibt \(M\) eine \(0\) auf das dritte Arbeitsband. \(M\) fährt den Lese-/Schreibkopf auf dem zweiten Arbeitsband zurück und wiederholt das vorgehen, bis keine \(0\) mehr gelesen werden kann auf dem ersten Arbeitsband. In diesem Fall geht \(M\) in \(q_\text{accept}\) über.
+
+Auf dem dritten Arbeitsband steht nun \(0^{\lfloor n \div m \rfloor}\).
+
+Falls \(0^{\lceil n \div m \rceil}\) gesucht ist, so schreibt man immer zuerst die \(0\) auf das dritte Arbeitsband und liest dann so viele \(0\)-en auf dem ersten Band, wie \(1\)-en auf dem zweiten Arbeitsband.
+
+\subsection{Logarithmus zur Basis 2}
+Auf dem dritten Arbeitsband soll \(0^{\lceil \log_2(n+1) \rceil}\) stehen.
+
+\(M\) liest das zweite Eingabeband. Für jede gelesene \(0\) schreibt \(M\) die Position auf das dritte Arbeitsbands. Dies macht sie wie folgt: \(M\) initialisiert das dritte Arbeitsband mit einer \(0\). Für jede gelesene \(0\) vom zweiten Arbeitsband addiert \(M\) eine \(1\) zum Wert, der auf dem dritten Arbeitsband kodiert ist. Hat \(M\) alle \(0\)-en auf dem zweiten Eingabeband gelesen, so ist auf dem dritten Arbeitsband die Länge des Wortes binär kodiert. Dies entspricht gerade \(\lceil \log_2(n+1) \rceil = \operatorname{Bin}(n)\).
+
+Somit steht auf dem dritten Arbeitsband nun \(0^{\lceil \log_2(n+1) \rceil}\).
 
 \section{Formeln}
 \subsection{Summenformel für Anzahl Programme}
