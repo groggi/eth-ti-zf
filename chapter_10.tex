@@ -119,4 +119,65 @@ Eine nicht normierte reguläre Grammatik $G$ kann dabei wie folgt in eine äquiv
 $\mathcal{L}_3 = \mathcal{L}(EA)$
 \end{satz}
 
+\section{Kontextfreie Grammatiken und Kellerautomaten}
+\begin{remark}\ 
+\begin{itemize}
+  \item Die Klasse \(\mathcal{L}_2 = \mathcal{L}_{CF}\). Die Klasse der kontextfreien Sprachen ist also gleich der Klasse der Typ-2-Grammatiken.
+  \item \(\mathcal{L}_3 \subset \mathcal{L}_{CF}\). Somit sind alle regulären Sprachen auch kontextfreie Sprachen bzw. es gibt kontextfreie Sprachen, die keine regulären Sprachen sind.\\
+\end{itemize}
+\end{remark}
 
+\begin{definition}
+Sei \(G = (\Sigma_N, \Sigma_T, P, S)\) eine kontextfreie Grammatik und sei das Wort \(x \in L(G)\). Sei \(a\) eine Ableitung von \(x\) in \(G\). Der Syntaxbaum (Ableitungsbaum) \(T_a\) der Ableitung \(a\) ist ein markierter Baum mit folgenden Eigenschaften:
+\begin{itemize}
+  \item \(T_a\) hat eine Wurzel, die mit \(S\) markiert ist.
+  \item Jeder Knoten von \(T_a\) ist mit einem Symbol aus \(\Sigma_N \cup \Sigma_T \cup \{\lambda\}\) markiert.
+  \item Innere Knoten sind mit Symbolen aus \(\Sigma_N\) markiert.
+  \item Alle Blätter sind mit Symbolen aus \(Sigma_T \cup \{\lambda\}\) markiert. Gelesen von links nach rechts ergeben sie das Wort \(x\).
+  \item Für den ersten Ableitungsschritt \(S \to \beta_1 \beta_2 \beta_3 \ldots \beta_r\), wobei \(\beta_i \in \Sigma_N \cup \Sigma_T\), erhält \(S\) genau \(r\) Söhne \(v_1, \ldots, v_r\), die von links nach rechts mit \(\beta_1, \ldots, \beta_r\) markiert sind.
+  \item Für jede Anwendung einer Regel der Form \(A \to \alpha_1 \alpha2 \ldots \alpha_k\) in \(a\) hat der entsprechende innere Knoten \(v\) mit der Markierung \(A\) genau \(k\) Söhne \(v_1, \ldots, v_k\), die von links nach rechts mit den Symbolen \(\alpha_1, \ldots, \alpha_k\) markiert sind. Wobei \(\alpha_i \in \Sigma_N \cup \Sigma_T\).
+\end{itemize}
+
+Der Syntaxbaum \(T_a\) wird auch als Syntaxbaum zur Generierung von \(x\) in \(G\) bezeichnet.\\
+\end{definition}
+
+Jede Ableitung hat einen eindeutigen Syntaxbaum. Wobei mehrere unterschiedliche Ableitungen zu dem gleichen Syntaxbaum führen können.
+
+\begin{definition}
+Eine kontextfreie Grammatik \(G\) ist \textbf{normiert}, wenn sie
+\begin{itemize}
+  \item keine nutzlosen Symbole enthält. Also alle Symbole \(X\), die startend von \(S\) nicht erreicht werden können.
+  \item keine Regel der Form \(X \to \lambda\) hat.
+  \item keine Kettenregeln bezitzt.\\
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+Sei \(G = (\Sigma_N, \Sigma_T, P, S)\) eine kontextfreie Grammatik. \(G\) ist in \textbf{Chomsky-Normalform}, falls alle Regeln eine der beiden Formen haben:
+\begin{itemize}
+  \item \(A \to BC\) für \(A, B, C \in \Sigma_N\), oder
+  \item \(A \to a\) für \(A \in \Sigma_N, a \in \Sigma_T\).\\
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+\(G\) ist in \textbf{Greibach-Normalform}, wenn alle Regeln die folgende Form haben:
+\[
+A \to a \alpha \quad \text{ mit } A \in \Sigma_N, a \in \Sigma_T, \alpha \in \Sigma_N^*.
+\]\\
+\end{definition}
+
+\begin{satz}
+Für jede kontextfreie Grammatik \(G\) mit \(\lambda \notin L(G)\) existiert eine zu \(G\) äquivalente Grammatik in Chomsky-Normalform und in Greibach-Normalform.\\
+\end{satz}
+
+\begin{lemma}[Pumping-Lemma für kontextfreie Sprachen]
+Für jede kontextfreie Sprache \(L\) gibt es eine nur von \(L\) abhängige Konstante \(n_L\), so dass für alle Wörter \(z \in L\) mit \(|z| \geq n_L\) eine Zerlegung \(z = uvwxy\) existiert, so dass
+\begin{itemize}
+  \item \(|vx| \geq 1\),
+  \item \(|vwx| \leq n_L\), und
+  \item \(\{uv^iwx^iy \ |\ i \in \N\} \subseteq L\}.\)\\
+\end{itemize}
+\end{lemma}
+
+\todo[inline]{Seite 386}
