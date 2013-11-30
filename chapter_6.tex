@@ -382,8 +382,46 @@ falls folgende Bedingungen erfüllt sind:
     \item für jedes \(x \in L\) und jedes \(y \in \mathcal{M}(x): |y| \leq p_U(|x|)\). Jede zulässige Lösung von \(U\) ist polynomiell in der Eingabegrösse.
     \item es existiert ein polynomieller Algorithmus \(A\), der für jedes \(y \in \Sigma_O^*\) und jedes \(x \in L\) mit \(|y| \leq p_U(|x|)\) entscheidet, ob \(y \in \mathcal{M}(x)\) oder nicht.
   \end{itemize}
-  \item die Funktion \(\operatorname{cost}\) kann man in polynomieller Zeit berechnen.
+  \item die Funktion \(\operatorname{cost}\) kann man in polynomieller Zeit berechnen.\\
 \end{itemize}
 \end{definition}
 
-\todo[inline]{Seite 256}
+Ein Optimierungsproblem \(U\) ist also in NPO, falls
+\begin{itemize}
+  \item es möglich ist effizient zu überprüfen, ob ein Wort im Problemfall liegt. Also ob ein Wort eine Instanz von \(U\) ist,
+  \item die Grösse der Lösung polynomiell in der Grösse der Eingabe ist und man in polynomieller Zeit verifizieren kann, ob ein \(y\) eine gültige Lösung für einen gegebenen Problemfall ist und
+  \item die Kosten der zulässigen Lösung effizient berechnen kann.
+\end{itemize}
+
+\begin{definition}
+PO ist die Klasse von Optimierungsproblemen \(U = (\Sigma_I, \Sigma_O, L, \mathcal{M}, \operatorname{cost}, \operatorname{goal})\), so dass
+\begin{itemize}
+  \item \(U \in NPO\)
+  \item es existiert ein polynomieller Algorithmus \(A\), so dass für jedes \(x \in L\), \(A(x)\) eine optimale Lösung für \(x\) ist.\\
+\end{itemize}
+\end{definition}
+
+\begin{definition}
+Sei \(U = (\Sigma_I, \Sigma_O, L, \mathcal{M}, \operatorname{cost}, \operatorname{goal})\) ein Optimierungsproblem aus NPO (\(U \in NPO\)). Die \textbf{Schwellenwert-Sprache für \(U\)} ist
+\[
+  \operatorname{Lang}_U = \{ (x, a) \in L \times \Sigma_\text{bool}^* \ |\ \operatorname{Opt}_U \leq \operatorname{Nummer}(a) \}
+\]
+falls \(\operatorname{goal} = \text{Minimum}\), und für \(\operatorname{goal} = \text{Maximum}\):
+\[
+\operatorname{Lang}_U = \{ (x, a) \in L \times \Sigma_\text{bool}^* \ |\ \operatorname{Opt}_U \geq \operatorname{Nummer}(a) \}.
+\]
+
+\(U\) ist \textbf{NP-schwer}, falls \(\operatorname{Lang}_U\) NP-schwer ist.\\
+\end{definition}
+
+\begin{lemma}
+Falls das Optimierungsproblem \(U \in PO\), dann ist \(\operatorname{Lang}_U \in P\).\\
+\end{lemma}
+
+
+\begin{lemma}
+\begin{itemize}
+  \item MAX-SAT ist NP-schwer
+  \item MAX-CL ist NP-schwer
+\end{itemize}
+\end{lemma}
